@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>469</width>
-    <height>273</height>
+    <width>517</width>
+    <height>279</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -24,119 +24,162 @@
     <normaloff>:/logo/logo/WoD.png</normaloff>:/logo/logo/WoD.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
+       <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <layout class="QFormLayout" name="formLayout">
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="spinBox_pool">
-            <property name="toolTip">
-             <string>The number of dice for this pool without any Modifiers.</string>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <layout class="QFormLayout" name="formLayout">
+            <property name="fieldGrowthPolicy">
+             <enum>QFormLayout::ExpandingFieldsGrow</enum>
             </property>
-            <property name="minimum">
-             <number>0</number>
-            </property>
-            <property name="maximum">
-             <number>999</number>
-            </property>
-            <property name="value">
-             <number>10</number>
-            </property>
-           </widget>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_diceNumber">
+              <property name="text">
+               <string>&amp;Dice</string>
+              </property>
+              <property name="buddy">
+               <cstring>spinBox_pool</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QSpinBox" name="spinBox_pool">
+              <property name="toolTip">
+               <string>The number of dice for this pool without any Modifiers.</string>
+              </property>
+              <property name="minimum">
+               <number>0</number>
+              </property>
+              <property name="maximum">
+               <number>999</number>
+              </property>
+              <property name="value">
+               <number>10</number>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>&amp;Modifier</string>
+              </property>
+              <property name="buddy">
+               <cstring>spinBox_modifier</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QSpinBox" name="spinBox_modifier">
+              <property name="toolTip">
+               <string>The Modifiers for this roll.</string>
+              </property>
+              <property name="minimum">
+               <number>-99</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_diceNumber">
-            <property name="text">
-             <string>&amp;Dice</string>
-            </property>
-            <property name="buddy">
-             <cstring>spinBox_pool</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>&amp;Modifier</string>
-            </property>
-            <property name="buddy">
-             <cstring>spinBox_modifier</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QSpinBox" name="spinBox_modifier">
-            <property name="toolTip">
-             <string>The Modifiers for this roll.</string>
-            </property>
-            <property name="minimum">
-             <number>-99</number>
-            </property>
-           </widget>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QComboBox" name="comboBox_xAgain">
+              <property name="toolTip">
+               <string>The reroll-property for this roll.</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>10 again</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>9 again</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>8 again</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>no reroll</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>no reroll &amp; subtract 1s</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBox_rote">
+              <property name="toolTip">
+               <string>Activate the Rote-ability (allowing you to reroll all unsuccessfule dice).</string>
+              </property>
+              <property name="text">
+               <string>&amp;Rote-property</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QComboBox" name="comboBox_xAgain">
-          <property name="toolTip">
-           <string>The reroll-property for this roll.</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>10 again</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>9 again</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>8 again</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>no reroll</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>no reroll &amp; subtract 1s</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="checkBox_rote">
-          <property name="toolTip">
-           <string>Activate the Rote-ability (allowing you to reroll all unsuccessfule dice).</string>
-          </property>
-          <property name="text">
-           <string>&amp;Rote-property</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
+         <widget class="QPushButton" name="pushButton_roll">
+          <property name="minimumSize">
            <size>
-            <width>20</width>
-            <height>40</height>
+            <width>0</width>
+            <height>50</height>
            </size>
           </property>
-         </spacer>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Press Button to roll the dice.</string>
+          </property>
+          <property name="text">
+           <string>&amp;Roll</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources/resource.qrc">
+            <normaloff>:/icons/W10.svg</normaloff>:/icons/W10.svg</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+R</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -217,26 +260,6 @@
           </widget>
          </item>
         </layout>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_7">
-      <item>
-       <widget class="QPushButton" name="pushButton_roll">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Press Button to roll the dice.</string>
-        </property>
-        <property name="text">
-         <string>&amp;Roll</string>
-        </property>
        </widget>
       </item>
      </layout>
@@ -334,8 +357,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>469</width>
-     <height>21</height>
+     <width>517</width>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -407,7 +430,6 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
-  <tabstop>pushButton_roll</tabstop>
   <tabstop>spinBox_pool</tabstop>
   <tabstop>spinBox_modifier</tabstop>
   <tabstop>comboBox_xAgain</tabstop>

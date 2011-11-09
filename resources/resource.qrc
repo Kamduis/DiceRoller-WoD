@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/icons">
+    <file>W10.svg</file>
     <file>actions/ok.png</file>
     <file>actions/agt_action_fail.png</file>
     <file>actions/apply.png</file>
