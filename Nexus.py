@@ -42,7 +42,7 @@ from resources import resource_rc
 PROGRAM_NAME = "DiceRoller WoD"
 PROGRAM_VERSION_MAJOR = 0
 PROGRAM_VERSION_MINOR = 1
-PROGRAM_VERSION_CHANGE = 1
+PROGRAM_VERSION_CHANGE = 2
 PROGRAM_DESCRIPTION = "A dice roller for the W10-System (World of Darkness)"
 
 PROGRAM_LANGUAGE_PATH = "lang"
@@ -307,12 +307,7 @@ class Nexus(QMainWindow):
 
 		if self.ui.groupBox_extended.isChecked():
 			#qDebug("Checked")
-			if self.ui.radioButton_target.isChecked():
-				#qDebug("Wir würfeln zu einem Zielwert hin.")
-				self.extendedRoll.roll()
-			else:
-				#qDebug("Wir schauen, welches Ergebnis wir in der angegebenen Anzahl von Würfen hinbekommen.")
-				self.extendedRoll.roll()
+			self.extendedRoll.roll()
 		else:
 			#qDebug("Not Checked")
 			self.instantRoll.roll()

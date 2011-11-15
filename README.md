@@ -2,7 +2,7 @@
 
 Keywords:	RPG, White Wolf, World of Darkness, Changeling, Mage, Vampire, Werewolf
 
-A dice simulator for the Pen & Paper Roleplaying games in the World of Darkness, created by White Wolf Inc.
+A dice simulator for the Pen & Paper Roleplaying games in the World of Darkness. This Software is an inofficial fan-made product. The developer has no connection to White Wolf Inc., the creators of the Pen & Paper games, to which it refers.
 
 Developed by [Victor](http://www.caern.de/).
 

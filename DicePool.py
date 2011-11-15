@@ -470,16 +470,26 @@ class ExtendedRoll(ExtendedRoll_Base):
 		if (not self.__continue):
 			self.rollFinished.emit(DieResult.dramaticFailure)
 		else:
-			if (self._successes < self.target):
-				self.rollFinished.emit(DieResult.failure)
-			elif (self.isHouserules):
-				if (self._exceptional):
+			if (self.isResultInRolls):
+				# Diese Regeln treten in Kraft wenn die Anzahl der Würfe festgelegt ist.
+				if (self._successes < 1):
+					self.rollFinished.emit(DieResult.failure)
+				elif (self._exceptional):
 					self.rollFinished.emit(DieResult.exceptionalSuccess)
 				else:
 					self.rollFinished.emit(DieResult.success)
 			else:
-				# Das hier ist die Standardregel. Ein Exceptional trifft nur dann zu, wenn das Ziel um 5 übertroffen wurde. Das aber ist eine doofe Regel. Ein Exceptional tritt dann ja kaum ein, da man im letzten Wurf mindestens \emph{6} Erfolge benötigt.
-				if (self._successes > self.target + 4):
-					self.rollFinished.emit(DieResult.exceptionalSuccess)
+				if (self._successes < self.target):
+					self.rollFinished.emit(DieResult.failure)
+				elif (self.isHouserules):
+					# Bei der Hausregel liegt immer dann ein außerordentlicher Erfolg vor, wenn wenigstens einzelner Wurf während des erweiterten Wurfs einen solchen zeigte.
+					if (self._exceptional):
+						self.rollFinished.emit(DieResult.exceptionalSuccess)
+					else:
+						self.rollFinished.emit(DieResult.success)
 				else:
-					self.rollFinished.emit(DieResult.success)
+					# Das hier ist die Standardregel. Ein Exceptional trifft nur dann zu, wenn das Ziel um 5 übertroffen wurde. Das aber ist eine doofe Regel. Ein Exceptional tritt dann ja kaum ein, da man im letzten Wurf mindestens \emph{6} Erfolge benötigt.
+					if (self._successes > self.target + 4):
+						self.rollFinished.emit(DieResult.exceptionalSuccess)
+					else:
+						self.rollFinished.emit(DieResult.success)
