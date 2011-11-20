@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>517</width>
-    <height>279</height>
+    <height>326</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,10 +18,6 @@
   </property>
   <property name="windowTitle">
    <string>DiceRoller</string>
-  </property>
-  <property name="windowIcon">
-   <iconset resource="resources/resource.qrc">
-    <normaloff>:/logo/logo/WoD.png</normaloff>:/logo/logo/WoD.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -165,10 +161,6 @@
           </property>
           <property name="text">
            <string>&amp;Roll</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources/resource.qrc">
-            <normaloff>:/icons/W10.svg</normaloff>:/icons/W10.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -341,13 +333,47 @@
         <property name="text">
          <string>&amp;Quit</string>
         </property>
-        <property name="icon">
-         <iconset resource="resources/resource.qrc">
-          <normaloff>:/icons/actions/exit.png</normaloff>:/icons/actions/exit.png</iconset>
-        </property>
        </widget>
       </item>
      </layout>
+    </item>
+    <item>
+     <widget class="QFrame" name="frame_dice">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_dice">
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -385,10 +411,6 @@
    <addaction name="menuHelp"/>
   </widget>
   <action name="action_quit">
-   <property name="icon">
-    <iconset resource="resources/resource.qrc">
-     <normaloff>:/icons/actions/exit.png</normaloff>:/icons/actions/exit.png</iconset>
-   </property>
    <property name="text">
     <string>Quit</string>
    </property>
@@ -400,10 +422,6 @@
    </property>
   </action>
   <action name="action_about">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/logo/WoD.png</normaloff>:/icons/logo/WoD.png</iconset>
-   </property>
    <property name="text">
     <string>About...</string>
    </property>
@@ -438,9 +456,7 @@
   <tabstop>spinBox_maxRolls</tabstop>
   <tabstop>checkBox_rollsLimited</tabstop>
  </tabstops>
- <resources>
-  <include location="resources/resource.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>action_quit</sender>

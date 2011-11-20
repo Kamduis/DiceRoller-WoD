@@ -2,7 +2,7 @@
 
 """
 Copyright (C) 2010 by Victor von Rhein
-goliath@caern.de
+victor@caern.de
 
 This file is part of DiceRoller-WoD.
 
@@ -25,12 +25,15 @@ along with DiceRoller-WoD.  If not,  see <http://www.gnu.org/licenses/>.
 
 import os
 import sys
+import time
 
-from PyQt4.QtCore import Qt, qDebug, QCoreApplication, QTranslator, QLibraryInfo, QObject, QDir, QString, QSize, QPoint, QStringList, SIGNAL, SLOT, pyqtSignal
-from PyQt4.QtGui import QWidget, QApplication, QAction, QActionGroup, QMainWindow, QMenu, QDirModel, QListView, QTreeView, QTableView, QPushButton, QMessageBox, QLabel, QPixmap
+from PyQt4.QtCore import Qt, qDebug, QCoreApplication, QTranslator, QLibraryInfo, QObject, QDir, QTimer, QString, QSize, QPoint, QStringList, SIGNAL, SLOT, pyqtSignal
+from PyQt4.QtGui import QWidget, QApplication, QAction, QActionGroup, QSizePolicy, QMainWindow, QFrame, QMenu, QDirModel, QListView, QTreeView, QTableView, QPushButton, QMessageBox, QLabel, QIcon, QPixmap, QGraphicsScene, QGraphicsView
+from PyQt4.QtSvg import *#QSvgWidget, QSvgRenderer, QGraphicsSvgItem
 
 from MainWindow import Ui_MainWindow
 from Settings import Settings
+from Random import Random
 from Dice import DieResult
 from DicePool import InstantRoll, ExtendedRoll
 
@@ -42,12 +45,15 @@ from resources import resource_rc
 PROGRAM_NAME = "DiceRoller WoD"
 PROGRAM_VERSION_MAJOR = 0
 PROGRAM_VERSION_MINOR = 1
-PROGRAM_VERSION_CHANGE = 2
+PROGRAM_VERSION_CHANGE = 3
 PROGRAM_DESCRIPTION = "A dice roller for the W10-System (World of Darkness)"
 
 PROGRAM_LANGUAGE_PATH = "lang"
 
 CONFIG_FILE = "config.cfg"
+
+DICEROLL_TIMER_INTERVAL = 50
+DICEROLL_TIMER_DELAY = 400
 
 
 
@@ -78,6 +84,8 @@ class Nexus(QMainWindow):
 
 	In dieser Klasse wird die GUI gesteuert und die Würfelwürfe aufgerufen.
 	"""
+	
+	dicePoolChanged = pyqtSignal(int)
 
 	xAgainChanged = pyqtSignal(int)
 	cursed = pyqtSignal(bool)
@@ -105,6 +113,7 @@ class Nexus(QMainWindow):
 			"." +
 			QString.number(PROGRAM_VERSION_CHANGE)
 		)
+		QApplication.setWindowIcon(QIcon(":/icons/logo/WoD.png"))
 
 		self.ui = Ui_MainWindow()
 		self.ui.setupUi(self)
@@ -114,6 +123,13 @@ class Nexus(QMainWindow):
 		#self.createLanguageMenu()
 		self.instantRoll = InstantRoll()
 		self.extendedRoll = ExtendedRoll()
+
+		# Dieser Zähler bestimmt, wie der rollende Würfel angezeigt wird.
+		self.timerDice = QTimer()
+		# Verzögert die tatsächliche Ausführung des Würfelwurfs.
+		self.timerRoll = QTimer()
+		
+		self.populateUi()
 		self.createConnections()
 		self.initializing()
 
@@ -216,6 +232,20 @@ class Nexus(QMainWindow):
 		#self.reset()
 
 
+	def populateUi(self):
+		self.svgRenderer = QSvgRenderer(":/icons/W10.svg")
+		self.scene = QGraphicsScene()
+		self.view = QGraphicsView()
+		self.view.setFrameShape(QFrame.NoFrame)
+		self.view.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+		self.view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+		self.view.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+		self.view.setStyleSheet("background-color: transparent;");
+		
+		self.view.setScene(self.scene)
+		self.ui.horizontalLayout_dice.insertWidget(1, self.view)
+
+
 	def createConnections(self):
 		"""
 		Erstelle die Verbindungen zwischen den verschiedenen Klassen und Elementen des Programms.
@@ -254,12 +284,22 @@ class Nexus(QMainWindow):
 		self.extendedRoll.rollsNeeded.connect(self.setResultRolls)
 		self.instantRoll.rollFinished.connect(self.setResult)
 		self.extendedRoll.rollFinished.connect(self.setResult)
+		
+		self.dicePoolChanged.connect(self.changeDiceDisplay)
+
+		self.timerDice.timeout.connect(self.displayDice)
+		self.timerRoll.timeout.connect(self._executeRoll)
 
 
 	def initializing(self):
 		"""
 		Initialisiert das Programm mit den Startwerten.
 		"""
+
+		self.ui.action_quit.setIcon(QIcon(":/icons/actions/exit.png"))
+		self.ui.action_about.setIcon(QIcon(":/icons/logo/WoD.png"))
+		self.ui.pushButton_quit.setIcon(self.ui.action_quit.icon())
+		self.ui.pushButton_roll.setIcon(QIcon(":icons/W10_0.svg"))
 		
 		self.ui.action_quit.setMenuRole(QAction.QuitRole)
 		self.ui.action_about.setText(self.tr("About %1...").arg(QApplication.applicationName()))
@@ -274,6 +314,56 @@ class Nexus(QMainWindow):
 		self.ui.groupBox_extended.setChecked(False)
 		self.ui.checkBox_rollsLimited.setChecked(True)
 
+		self.dice = []
+		for i in xrange(10):
+			self.W10_x = QGraphicsSvgItem()
+			self.W10_x.setSharedRenderer(self.svgRenderer)
+			self.W10_x.setElementId("layer" + str(i))
+			#self.W10_x.setVisible(False)
+			# Ich lege diese Liste an, da ich auf die Liste in self.scene irgendwie nicht zugreifen kann.
+			self.dice.append(self.W10_x)
+			#self.scene.addItem(self.W10_x)
+
+
+	def displayDice(self, value=None):
+		"""
+		@todo Der Würfel kann mehrmals in Folge das selbe Ergebnis anzeigen, was dazu führt, daß der Bildablauf zu stocken scheint.
+		"""
+
+		if (value == None):
+			dieValue = Random.random(10)-1
+		else:
+			dieValue = value
+
+		for item in self.scene.items():
+			self.scene.removeItem(item)
+
+		self.scene.addItem(self.dice[dieValue])
+		self.view.setSceneRect(self.scene.itemsBoundingRect())
+		self.view.fitInView(self.dice[dieValue])
+
+
+	def changeDiceDisplay(self, number):
+		"""
+		Diese Funktion bestimmt, wieviele Würfel angezeigt werden.
+		"""
+		pass
+		
+		#if (self.ui.horizontalLayout_dice.count > 2):
+			#pass
+		
+		#randomValue = Random.random(10)-1
+
+		#for die in xrange(number):
+			#self.__W10_scene = QGraphicsScene()
+			#self.__W10_scene.addItem(self.dice[randomValue])
+			
+			#self.__W10_view = QGraphicsView()
+			#self.__W10_view.setScene(self.__W10_scene)
+			#self.__W10_view.setSceneRect(self.scene.itemsBoundingRect())
+			#self.__W10_view.fitInView(self.dice[randomValue])
+			#self.ui.horizontalLayout_dice.insertWidget(1, self.__W10_view)
+
 
 	def aboutApp(self):
 		"""
@@ -284,7 +374,7 @@ class Nexus(QMainWindow):
 			<h1>%1</h1>
 			<h2>Version: %2</h2>
 			<p>Copyright (C) 2011 by Victor von Rhein<br>
-			EMail: goliath@caern.de</p>
+			EMail: victor@caern.de</p>
 		""").arg(QCoreApplication.applicationName()).arg(QCoreApplication.applicationVersion())
 		self.gnuText = self.tr("""
 			<h2>GNU General Public License</h2>
@@ -302,7 +392,17 @@ class Nexus(QMainWindow):
 
 	def roll(self):
 		"""
-		Entscheidet vor dem eigentlichen Würfelwurf, ob ein normaler oder ein erweiterter Wurf notwenig ist und führt diesen aus.
+		Der Wurf wird durchgeführt. Der tatsächliche Wurf wird aber von den Timern angestoßen.
+		"""
+
+		# Es wird ein rollender Würfel angezeigt.
+		self.timerDice.start(DICEROLL_TIMER_INTERVAL)
+		self.timerRoll.start(DICEROLL_TIMER_DELAY)
+
+
+	def _executeRoll(self):
+		"""
+		Entscheidet vor dem eigentlichen Würfelwurf, ob ein normaler oder ein erweiterter Wurf notwendig ist und führt diesen aus.
 		"""
 
 		if self.ui.groupBox_extended.isChecked():
@@ -312,6 +412,10 @@ class Nexus(QMainWindow):
 			#qDebug("Not Checked")
 			self.instantRoll.roll()
 
+		# Die Anzeige des rollenden Würfels wird angehalten
+		self.timerDice.stop()
+		self.timerRoll.stop()
+
 
 	def calcDicePool(self, value):
 		"""
@@ -319,8 +423,10 @@ class Nexus(QMainWindow):
 		"""
 
 		self.instantRoll.poolSize = value + self.ui.spinBox_modifier.value()
-		self.extendedRoll.poolSize = value + self.ui.spinBox_modifier.value()
+		self.extendedRoll.poolSize = self.instantRoll.poolSize
 		self.extendedRoll.limit = value
+		
+		self.dicePoolChanged.emit(self.instantRoll.poolSize)
 
 
 	def calcDicePoolMod(self, value):
@@ -369,7 +475,7 @@ class Nexus(QMainWindow):
 
 	def setResult(self, value):
 		"""
-		Schreibt das Ergebnis des Wurfs in die GUI.
+		Schreibt das Ergebnis des Wurfs in die GUI. Dabei wird auch je nach Erfolgsqualität bei dem dargestellten Würfel eine andere Augenzahl gezeigt.
 		"""
 
 		self.ui.statusBar.showMessage(self.tr("Result of diceroll is displayed."))
@@ -377,15 +483,19 @@ class Nexus(QMainWindow):
 		if (value == DieResult.dramaticFailure):
 			self.ui.label_resultText.setText(self.tr("Dramatic Failure"));
 			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/cnrdelete-all1.png"));
+			self.displayDice(1)
 		elif (value == DieResult.failure):
 			self.ui.label_resultText.setText(self.tr("Failure"));
 			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/fileclose.png"));
+			self.displayDice(Random.random(2, 7))
 		elif (value == DieResult.success):
 			self.ui.label_resultText.setText(self.tr("Success"));
 			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/ok.png"));
+			self.displayDice(Random.random(8, 9))
 		else:
 			self.ui.label_resultText.setText(self.tr("Exceptional Success"));
 			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/bookmark.png"));
+			self.displayDice(0)
 
 
 	def setResultRolls(self, value):
