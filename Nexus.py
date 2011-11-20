@@ -44,8 +44,8 @@ from resources import resource_rc
 
 PROGRAM_NAME = "DiceRoller WoD"
 PROGRAM_VERSION_MAJOR = 0
-PROGRAM_VERSION_MINOR = 1
-PROGRAM_VERSION_CHANGE = 3
+PROGRAM_VERSION_MINOR = 2
+PROGRAM_VERSION_CHANGE = 0
 PROGRAM_DESCRIPTION = "A dice roller for the W10-System (World of Darkness)"
 
 PROGRAM_LANGUAGE_PATH = "lang"
