@@ -390,7 +390,9 @@ class ExtendedRoll_Base(QObject):
 
 
 class ExtendedRoll(ExtendedRoll_Base):
-
+	"""
+	Simuliert einen erweiterten Würfelwurf.
+	"""
 
 	def __init__(self, parent=None, target=1, poolsize=10):
 		ExtendedRoll_Base.__init__(self, parent, target, poolsize)

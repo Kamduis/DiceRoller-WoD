@@ -340,7 +340,7 @@
     <item>
      <widget class="QFrame" name="frame_dice">
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::NoFrame</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
@@ -348,6 +348,19 @@
       <layout class="QHBoxLayout" name="horizontalLayout_dice">
        <item>
         <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_3">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -443,6 +456,7 @@
   <tabstop>spinBox_maxRolls</tabstop>
   <tabstop>checkBox_rollsLimited</tabstop>
  </tabstops>
+ <resources/>
  <connections>
   <connection>
    <sender>action_quit</sender>

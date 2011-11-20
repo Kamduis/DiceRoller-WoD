@@ -52,8 +52,8 @@ PROGRAM_LANGUAGE_PATH = "lang"
 
 CONFIG_FILE = "config.cfg"
 
-DICEROLL_TIMER_INTERVAL = 100
-DICEROLL_TIMER_DELAY = 1000
+DICEROLL_TIMER_INTERVAL = 50
+DICEROLL_TIMER_DELAY = 400
 
 
 
@@ -84,6 +84,8 @@ class Nexus(QMainWindow):
 
 	In dieser Klasse wird die GUI gesteuert und die Würfelwürfe aufgerufen.
 	"""
+	
+	dicePoolChanged = pyqtSignal(int)
 
 	xAgainChanged = pyqtSignal(int)
 	cursed = pyqtSignal(bool)
@@ -237,11 +239,11 @@ class Nexus(QMainWindow):
 		self.view.setFrameShape(QFrame.NoFrame)
 		self.view.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 		self.view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-		self.view.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+		self.view.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
 		self.view.setStyleSheet("background-color: transparent;");
 		
 		self.view.setScene(self.scene)
-		self.ui.horizontalLayout_dice.addWidget(self.view)
+		self.ui.horizontalLayout_dice.insertWidget(1, self.view)
 
 
 	def createConnections(self):
@@ -282,6 +284,8 @@ class Nexus(QMainWindow):
 		self.extendedRoll.rollsNeeded.connect(self.setResultRolls)
 		self.instantRoll.rollFinished.connect(self.setResult)
 		self.extendedRoll.rollFinished.connect(self.setResult)
+		
+		self.dicePoolChanged.connect(self.changeDiceDisplay)
 
 		self.timerDice.timeout.connect(self.displayDice)
 		self.timerRoll.timeout.connect(self._executeRoll)
@@ -316,25 +320,49 @@ class Nexus(QMainWindow):
 			self.W10_x.setSharedRenderer(self.svgRenderer)
 			self.W10_x.setElementId("layer" + str(i))
 			#self.W10_x.setVisible(False)
-			# Ich lege diese Liste an, da ich auf die Liste in self.scene irendwie nicht zugreifen kann.
+			# Ich lege diese Liste an, da ich auf die Liste in self.scene irgendwie nicht zugreifen kann.
 			self.dice.append(self.W10_x)
 			#self.scene.addItem(self.W10_x)
-		self.dice[0].setVisible(True)
 
 
-	def displayDice(self):
+	def displayDice(self, value=None):
 		"""
 		@todo Der Würfel kann mehrmals in Folge das selbe Ergebnis anzeigen, was dazu führt, daß der Bildablauf zu stocken scheint.
 		"""
 
-		randomValue = Random.random(10)-1
+		if (value == None):
+			dieValue = Random.random(10)-1
+		else:
+			dieValue = value
 
 		for item in self.scene.items():
 			self.scene.removeItem(item)
 
-		self.scene.addItem(self.dice[randomValue])
+		self.scene.addItem(self.dice[dieValue])
 		self.view.setSceneRect(self.scene.itemsBoundingRect())
-		self.view.resize(self.view.sizeHint())
+		self.view.fitInView(self.dice[dieValue])
+
+
+	def changeDiceDisplay(self, number):
+		"""
+		Diese Funktion bestimmt, wieviele Würfel angezeigt werden.
+		"""
+		pass
+		
+		#if (self.ui.horizontalLayout_dice.count > 2):
+			#pass
+		
+		#randomValue = Random.random(10)-1
+
+		#for die in xrange(number):
+			#self.__W10_scene = QGraphicsScene()
+			#self.__W10_scene.addItem(self.dice[randomValue])
+			
+			#self.__W10_view = QGraphicsView()
+			#self.__W10_view.setScene(self.__W10_scene)
+			#self.__W10_view.setSceneRect(self.scene.itemsBoundingRect())
+			#self.__W10_view.fitInView(self.dice[randomValue])
+			#self.ui.horizontalLayout_dice.insertWidget(1, self.__W10_view)
 
 
 	def aboutApp(self):
@@ -374,7 +402,7 @@ class Nexus(QMainWindow):
 
 	def _executeRoll(self):
 		"""
-		Entscheidet vor dem eigentlichen Würfelwurf, ob ein normaler oder ein erweiterter Wurf notwenig ist und führt diesen aus.
+		Entscheidet vor dem eigentlichen Würfelwurf, ob ein normaler oder ein erweiterter Wurf notwendig ist und führt diesen aus.
 		"""
 
 		if self.ui.groupBox_extended.isChecked():
@@ -395,8 +423,10 @@ class Nexus(QMainWindow):
 		"""
 
 		self.instantRoll.poolSize = value + self.ui.spinBox_modifier.value()
-		self.extendedRoll.poolSize = value + self.ui.spinBox_modifier.value()
+		self.extendedRoll.poolSize = self.instantRoll.poolSize
 		self.extendedRoll.limit = value
+		
+		self.dicePoolChanged.emit(self.instantRoll.poolSize)
 
 
 	def calcDicePoolMod(self, value):
@@ -445,7 +475,7 @@ class Nexus(QMainWindow):
 
 	def setResult(self, value):
 		"""
-		Schreibt das Ergebnis des Wurfs in die GUI.
+		Schreibt das Ergebnis des Wurfs in die GUI. Dabei wird auch je nach Erfolgsqualität bei dem dargestellten Würfel eine andere Augenzahl gezeigt.
 		"""
 
 		self.ui.statusBar.showMessage(self.tr("Result of diceroll is displayed."))
@@ -453,15 +483,19 @@ class Nexus(QMainWindow):
 		if (value == DieResult.dramaticFailure):
 			self.ui.label_resultText.setText(self.tr("Dramatic Failure"));
 			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/cnrdelete-all1.png"));
+			self.displayDice(1)
 		elif (value == DieResult.failure):
 			self.ui.label_resultText.setText(self.tr("Failure"));
 			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/fileclose.png"));
+			self.displayDice(Random.random(2, 7))
 		elif (value == DieResult.success):
 			self.ui.label_resultText.setText(self.tr("Success"));
 			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/ok.png"));
+			self.displayDice(Random.random(8, 9))
 		else:
 			self.ui.label_resultText.setText(self.tr("Exceptional Success"));
 			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/bookmark.png"));
+			self.displayDice(0)
 
 
 	def setResultRolls(self, value):

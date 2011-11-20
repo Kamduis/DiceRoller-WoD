@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Sun Nov 20 16:11:33 2011
+# Created: Sun Nov 20 20:40:48 2011
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -173,13 +173,15 @@ class Ui_MainWindow(object):
 		self.horizontalLayout_3.addWidget(self.pushButton_quit)
 		self.verticalLayout_4.addLayout(self.horizontalLayout_3)
 		self.frame_dice = QtGui.QFrame(self.centralWidget)
-		self.frame_dice.setFrameShape(QtGui.QFrame.StyledPanel)
+		self.frame_dice.setFrameShape(QtGui.QFrame.NoFrame)
 		self.frame_dice.setFrameShadow(QtGui.QFrame.Raised)
 		self.frame_dice.setObjectName(_fromUtf8("frame_dice"))
 		self.horizontalLayout_dice = QtGui.QHBoxLayout(self.frame_dice)
 		self.horizontalLayout_dice.setObjectName(_fromUtf8("horizontalLayout_dice"))
 		spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
 		self.horizontalLayout_dice.addItem(spacerItem3)
+		spacerItem4 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+		self.horizontalLayout_dice.addItem(spacerItem4)
 		self.verticalLayout_4.addWidget(self.frame_dice)
 		MainWindow.setCentralWidget(self.centralWidget)
 		self.statusBar = QtGui.QStatusBar(MainWindow)

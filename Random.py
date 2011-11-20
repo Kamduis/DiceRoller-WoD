@@ -33,9 +33,32 @@ from PyQt4.QtCore import QObject, QTime, qDebug, qsrand, qrand
 class Random(QObject):
 	qsrand(QTime.currentTime().msec())
 
+	
 	def __init__(self, parent=None):
 		pass
 
+		
+	#@staticmethod
+	#def random(valMax):
+		#"""
+		#Gibt einen zufälligen Wert zwischen 1 und valMax zurück. [1, valMax]
+		#"""
+		
+		#return 1 + qrand() % valMax
+
+		
 	@staticmethod
-	def random(max):
-		return 1 + qrand() % max
+	def random(valA, valB=0):
+		"""
+		Gibt einen zufälligen Wert zwischen valMin und valMax zurück. [valMin, valMax]
+		Sollte valB nicht angegeben werden, wird es als 0 angenommen.
+		"""
+		
+		if (valB < valA):
+			valueMin = valB
+			valueMax = valA
+		else:
+			valueMin = valA
+			valueMax = valB
+			
+		return valueMin + qrand() % (valueMax - valueMin)
