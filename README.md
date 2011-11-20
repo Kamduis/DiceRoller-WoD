@@ -4,7 +4,7 @@ Keywords:	RPG, White Wolf, World of Darkness, Changeling, Mage, Vampire, Werewol
 
 A dice simulator for the Pen & Paper Roleplaying games in the World of Darkness. This Software is an inofficial fan-made product. The developer has no connection to White Wolf Inc., the creators of the Pen & Paper games, to which it refers.
 
-Developed by [Victor](http://www.caern.de/).
+Developed by Victor.
 
 ## License
 
@@ -17,5 +17,5 @@ World of Darkness, Changeling: The Lost, Mage: The Awakening, Vampire: The Requi
 ## Links
 
 * [Frozen Executable](https://github.com/downloads/GoliathLeviathan/DiceRoller-WoD/DiceRoller-WoD-linux_64.tar.gz)
-* [Caern](http://www.caern.de/)
 * [White Wolf Homepage](http://www.white-wolf.com/)
+* [Caern](http://www.caern.de/)

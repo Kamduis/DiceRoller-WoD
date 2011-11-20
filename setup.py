@@ -3,7 +3,7 @@
 
 """
 Copyright (C) 2010 by Victor von Rhein
-goliath@caern.de
+victor@caern.de
 
 This file is part of DiceRoller-WoD.
 

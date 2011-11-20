@@ -2,7 +2,7 @@
 
 """
 Copyright (C) 2010 by Victor von Rhein
-goliath@caern.de
+victor@caern.de
 
 This file is part of DiceRoller-WoD.
 
@@ -26,11 +26,13 @@ along with DiceRoller-WoD.  If not,  see <http://www.gnu.org/licenses/>.
 import os
 import sys
 
-from PyQt4.QtCore import Qt, qDebug, QCoreApplication, QTranslator, QLibraryInfo, QObject, QDir, QString, QSize, QPoint, QStringList, SIGNAL, SLOT, pyqtSignal
-from PyQt4.QtGui import QWidget, QApplication, QAction, QActionGroup, QMainWindow, QMenu, QDirModel, QListView, QTreeView, QTableView, QPushButton, QMessageBox, QLabel, QPixmap
+from PyQt4.QtCore import Qt, qDebug, QCoreApplication, QTranslator, QLibraryInfo, QObject, QDir, QTimer, QString, QSize, QPoint, QStringList, SIGNAL, SLOT, pyqtSignal
+from PyQt4.QtGui import QWidget, QApplication, QAction, QActionGroup, QMainWindow, QMenu, QDirModel, QListView, QTreeView, QTableView, QPushButton, QMessageBox, QLabel, QPixmap, QGraphicsScene, QGraphicsView
+from PyQt4.QtSvg import *#QSvgWidget, QSvgRenderer, QGraphicsSvgItem
 
 from MainWindow import Ui_MainWindow
 from Settings import Settings
+from Random import Random
 from Dice import DieResult
 from DicePool import InstantRoll, ExtendedRoll
 
@@ -42,12 +44,14 @@ from resources import resource_rc
 PROGRAM_NAME = "DiceRoller WoD"
 PROGRAM_VERSION_MAJOR = 0
 PROGRAM_VERSION_MINOR = 1
-PROGRAM_VERSION_CHANGE = 2
+PROGRAM_VERSION_CHANGE = 3
 PROGRAM_DESCRIPTION = "A dice roller for the W10-System (World of Darkness)"
 
 PROGRAM_LANGUAGE_PATH = "lang"
 
 CONFIG_FILE = "config.cfg"
+
+DICEROLL_TIMER_INTERVAL = 100
 
 
 
@@ -114,6 +118,11 @@ class Nexus(QMainWindow):
 		#self.createLanguageMenu()
 		self.instantRoll = InstantRoll()
 		self.extendedRoll = ExtendedRoll()
+
+		# Dieser Zähler bestimmt, wie der rollende Würfel angezeigt wird.
+		self.timerDice = QTimer()
+		
+		self.populateUi()
 		self.createConnections()
 		self.initializing()
 
@@ -216,6 +225,15 @@ class Nexus(QMainWindow):
 		#self.reset()
 
 
+	def populateUi(self):
+		self.svgRenderer = QSvgRenderer(":/icons/W10.svg")
+		self.scene = QGraphicsScene()
+		self.view = QGraphicsView()
+		
+		self.view.setScene(self.scene)
+		self.ui.horizontalLayout_dice.addWidget(self.view)
+
+
 	def createConnections(self):
 		"""
 		Erstelle die Verbindungen zwischen den verschiedenen Klassen und Elementen des Programms.
@@ -255,6 +273,8 @@ class Nexus(QMainWindow):
 		self.instantRoll.rollFinished.connect(self.setResult)
 		self.extendedRoll.rollFinished.connect(self.setResult)
 
+		self.timerDice.timeout.connect(self.displayDice)
+
 
 	def initializing(self):
 		"""
@@ -274,6 +294,28 @@ class Nexus(QMainWindow):
 		self.ui.groupBox_extended.setChecked(False)
 		self.ui.checkBox_rollsLimited.setChecked(True)
 
+		self.dice = []
+		for i in xrange(10):
+			self.W10_x = QGraphicsSvgItem()
+			self.W10_x.setSharedRenderer(self.svgRenderer)
+			self.W10_x.setElementId("layer" + str(i))
+			self.W10_x.setVisible(False)
+			# Ich lege diese Liste an, da ich auf die Liste in self.scene irendwie nicht zugreifen kann.
+			self.dice.append(self.W10_x)
+			self.scene.addItem(self.W10_x)
+		self.dice[0].setVisible(True)
+		
+		
+	def displayDice(self):
+		"""
+		@todo Der Würfel kann mehrmals in Folge das selbe Ergebnis anzeigen, was dazu führt, daß der Bildablauf zu stocken scheint.
+		"""
+		
+		for item in self.dice:
+			item.setVisible(False)
+		
+		self.dice[Random.random(10)-1].setVisible(True)
+
 
 	def aboutApp(self):
 		"""
@@ -284,7 +326,7 @@ class Nexus(QMainWindow):
 			<h1>%1</h1>
 			<h2>Version: %2</h2>
 			<p>Copyright (C) 2011 by Victor von Rhein<br>
-			EMail: goliath@caern.de</p>
+			EMail: victor@caern.de</p>
 		""").arg(QCoreApplication.applicationName()).arg(QCoreApplication.applicationVersion())
 		self.gnuText = self.tr("""
 			<h2>GNU General Public License</h2>
@@ -305,12 +347,18 @@ class Nexus(QMainWindow):
 		Entscheidet vor dem eigentlichen Würfelwurf, ob ein normaler oder ein erweiterter Wurf notwenig ist und führt diesen aus.
 		"""
 
+		# Es wird ein rollender Würfel angezeigt.
+		self.timerDice.start(DICEROLL_TIMER_INTERVAL)
+
 		if self.ui.groupBox_extended.isChecked():
 			#qDebug("Checked")
 			self.extendedRoll.roll()
 		else:
 			#qDebug("Not Checked")
 			self.instantRoll.roll()
+
+		# Die Anzeige des rollenden Würfels wird angehalten
+		self.timerDice.stop()
 
 
 	def calcDicePool(self, value):
