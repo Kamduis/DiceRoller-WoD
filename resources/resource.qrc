@@ -1,6 +1,8 @@
 <RCC>
   <qresource prefix="/icons">
+    <file>logo/WoD.png</file>
     <file>W10.svg</file>
+    <file>W10_0.svg</file>
     <file>actions/ok.png</file>
     <file>actions/agt_action_fail.png</file>
     <file>actions/apply.png</file>
@@ -10,8 +12,5 @@
     <file>actions/exit.png</file>
     <file>actions/fileclose.png</file>
     <file>actions/no.png</file>
-  </qresource>
-  <qresource prefix="logo">
-    <file>logo/WoD.png</file>
   </qresource>
 </RCC>

@@ -25,9 +25,10 @@ along with DiceRoller-WoD.  If not,  see <http://www.gnu.org/licenses/>.
 
 import os
 import sys
+import time
 
 from PyQt4.QtCore import Qt, qDebug, QCoreApplication, QTranslator, QLibraryInfo, QObject, QDir, QTimer, QString, QSize, QPoint, QStringList, SIGNAL, SLOT, pyqtSignal
-from PyQt4.QtGui import QWidget, QApplication, QAction, QActionGroup, QMainWindow, QMenu, QDirModel, QListView, QTreeView, QTableView, QPushButton, QMessageBox, QLabel, QPixmap, QGraphicsScene, QGraphicsView
+from PyQt4.QtGui import QWidget, QApplication, QAction, QActionGroup, QSizePolicy, QMainWindow, QFrame, QMenu, QDirModel, QListView, QTreeView, QTableView, QPushButton, QMessageBox, QLabel, QIcon, QPixmap, QGraphicsScene, QGraphicsView
 from PyQt4.QtSvg import *#QSvgWidget, QSvgRenderer, QGraphicsSvgItem
 
 from MainWindow import Ui_MainWindow
@@ -52,6 +53,7 @@ PROGRAM_LANGUAGE_PATH = "lang"
 CONFIG_FILE = "config.cfg"
 
 DICEROLL_TIMER_INTERVAL = 100
+DICEROLL_TIMER_DELAY = 1000
 
 
 
@@ -109,6 +111,7 @@ class Nexus(QMainWindow):
 			"." +
 			QString.number(PROGRAM_VERSION_CHANGE)
 		)
+		QApplication.setWindowIcon(QIcon(":/icons/logo/WoD.png"))
 
 		self.ui = Ui_MainWindow()
 		self.ui.setupUi(self)
@@ -121,6 +124,8 @@ class Nexus(QMainWindow):
 
 		# Dieser Zähler bestimmt, wie der rollende Würfel angezeigt wird.
 		self.timerDice = QTimer()
+		# Verzögert die tatsächliche Ausführung des Würfelwurfs.
+		self.timerRoll = QTimer()
 		
 		self.populateUi()
 		self.createConnections()
@@ -229,6 +234,11 @@ class Nexus(QMainWindow):
 		self.svgRenderer = QSvgRenderer(":/icons/W10.svg")
 		self.scene = QGraphicsScene()
 		self.view = QGraphicsView()
+		self.view.setFrameShape(QFrame.NoFrame)
+		self.view.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+		self.view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+		self.view.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+		self.view.setStyleSheet("background-color: transparent;");
 		
 		self.view.setScene(self.scene)
 		self.ui.horizontalLayout_dice.addWidget(self.view)
@@ -274,12 +284,18 @@ class Nexus(QMainWindow):
 		self.extendedRoll.rollFinished.connect(self.setResult)
 
 		self.timerDice.timeout.connect(self.displayDice)
+		self.timerRoll.timeout.connect(self._executeRoll)
 
 
 	def initializing(self):
 		"""
 		Initialisiert das Programm mit den Startwerten.
 		"""
+
+		self.ui.action_quit.setIcon(QIcon(":/icons/actions/exit.png"))
+		self.ui.action_about.setIcon(QIcon(":/icons/logo/WoD.png"))
+		self.ui.pushButton_quit.setIcon(self.ui.action_quit.icon())
+		self.ui.pushButton_roll.setIcon(QIcon(":icons/W10_0.svg"))
 		
 		self.ui.action_quit.setMenuRole(QAction.QuitRole)
 		self.ui.action_about.setText(self.tr("About %1...").arg(QApplication.applicationName()))
@@ -299,22 +315,26 @@ class Nexus(QMainWindow):
 			self.W10_x = QGraphicsSvgItem()
 			self.W10_x.setSharedRenderer(self.svgRenderer)
 			self.W10_x.setElementId("layer" + str(i))
-			self.W10_x.setVisible(False)
+			#self.W10_x.setVisible(False)
 			# Ich lege diese Liste an, da ich auf die Liste in self.scene irendwie nicht zugreifen kann.
 			self.dice.append(self.W10_x)
-			self.scene.addItem(self.W10_x)
+			#self.scene.addItem(self.W10_x)
 		self.dice[0].setVisible(True)
-		
-		
+
+
 	def displayDice(self):
 		"""
 		@todo Der Würfel kann mehrmals in Folge das selbe Ergebnis anzeigen, was dazu führt, daß der Bildablauf zu stocken scheint.
 		"""
-		
-		for item in self.dice:
-			item.setVisible(False)
-		
-		self.dice[Random.random(10)-1].setVisible(True)
+
+		randomValue = Random.random(10)-1
+
+		for item in self.scene.items():
+			self.scene.removeItem(item)
+
+		self.scene.addItem(self.dice[randomValue])
+		self.view.setSceneRect(self.scene.itemsBoundingRect())
+		self.view.resize(self.view.sizeHint())
 
 
 	def aboutApp(self):
@@ -344,11 +364,18 @@ class Nexus(QMainWindow):
 
 	def roll(self):
 		"""
-		Entscheidet vor dem eigentlichen Würfelwurf, ob ein normaler oder ein erweiterter Wurf notwenig ist und führt diesen aus.
+		Der Wurf wird durchgeführt. Der tatsächliche Wurf wird aber von den Timern angestoßen.
 		"""
 
 		# Es wird ein rollender Würfel angezeigt.
 		self.timerDice.start(DICEROLL_TIMER_INTERVAL)
+		self.timerRoll.start(DICEROLL_TIMER_DELAY)
+
+
+	def _executeRoll(self):
+		"""
+		Entscheidet vor dem eigentlichen Würfelwurf, ob ein normaler oder ein erweiterter Wurf notwenig ist und führt diesen aus.
+		"""
 
 		if self.ui.groupBox_extended.isChecked():
 			#qDebug("Checked")
@@ -359,6 +386,7 @@ class Nexus(QMainWindow):
 
 		# Die Anzeige des rollenden Würfels wird angehalten
 		self.timerDice.stop()
+		self.timerRoll.stop()
 
 
 	def calcDicePool(self, value):

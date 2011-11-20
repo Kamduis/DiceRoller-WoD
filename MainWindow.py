@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Sat Nov 19 23:07:46 2011
+# Created: Sun Nov 20 16:11:33 2011
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,16 +17,13 @@ except AttributeError:
 class Ui_MainWindow(object):
 	def setupUi(self, MainWindow):
 		MainWindow.setObjectName(_fromUtf8("MainWindow"))
-		MainWindow.resize(517, 288)
+		MainWindow.resize(517, 326)
 		sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
 		sizePolicy.setHorizontalStretch(0)
 		sizePolicy.setVerticalStretch(0)
 		sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
 		MainWindow.setSizePolicy(sizePolicy)
 		MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "DiceRoller", None, QtGui.QApplication.UnicodeUTF8))
-		icon = QtGui.QIcon()
-		icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/logo/logo/WoD.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		MainWindow.setWindowIcon(icon)
 		self.centralWidget = QtGui.QWidget(MainWindow)
 		self.centralWidget.setObjectName(_fromUtf8("centralWidget"))
 		self.verticalLayout_4 = QtGui.QVBoxLayout(self.centralWidget)
@@ -95,9 +92,6 @@ class Ui_MainWindow(object):
 		self.pushButton_roll.setFont(font)
 		self.pushButton_roll.setToolTip(QtGui.QApplication.translate("MainWindow", "Press Button to roll the dice.", None, QtGui.QApplication.UnicodeUTF8))
 		self.pushButton_roll.setText(QtGui.QApplication.translate("MainWindow", "&Roll", None, QtGui.QApplication.UnicodeUTF8))
-		icon1 = QtGui.QIcon()
-		icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/W10.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		self.pushButton_roll.setIcon(icon1)
 		self.pushButton_roll.setIconSize(QtCore.QSize(32, 32))
 		self.pushButton_roll.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+R", None, QtGui.QApplication.UnicodeUTF8))
 		self.pushButton_roll.setObjectName(_fromUtf8("pushButton_roll"))
@@ -175,9 +169,6 @@ class Ui_MainWindow(object):
 		self.horizontalLayout_3.addItem(spacerItem2)
 		self.pushButton_quit = QtGui.QPushButton(self.centralWidget)
 		self.pushButton_quit.setText(QtGui.QApplication.translate("MainWindow", "&Quit", None, QtGui.QApplication.UnicodeUTF8))
-		icon2 = QtGui.QIcon()
-		icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/actions/exit.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		self.pushButton_quit.setIcon(icon2)
 		self.pushButton_quit.setObjectName(_fromUtf8("pushButton_quit"))
 		self.horizontalLayout_3.addWidget(self.pushButton_quit)
 		self.verticalLayout_4.addLayout(self.horizontalLayout_3)
@@ -208,15 +199,11 @@ class Ui_MainWindow(object):
 		self.menuExtras.setObjectName(_fromUtf8("menuExtras"))
 		MainWindow.setMenuBar(self.menuBar)
 		self.action_quit = QtGui.QAction(MainWindow)
-		self.action_quit.setIcon(icon2)
 		self.action_quit.setText(QtGui.QApplication.translate("MainWindow", "Quit", None, QtGui.QApplication.UnicodeUTF8))
 		self.action_quit.setToolTip(QtGui.QApplication.translate("MainWindow", "Quit the program.", None, QtGui.QApplication.UnicodeUTF8))
 		self.action_quit.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+Q", None, QtGui.QApplication.UnicodeUTF8))
 		self.action_quit.setObjectName(_fromUtf8("action_quit"))
 		self.action_about = QtGui.QAction(MainWindow)
-		icon3 = QtGui.QIcon()
-		icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/logo/WoD.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-		self.action_about.setIcon(icon3)
 		self.action_about.setText(QtGui.QApplication.translate("MainWindow", "About...", None, QtGui.QApplication.UnicodeUTF8))
 		self.action_about.setToolTip(QtGui.QApplication.translate("MainWindow", "About DiceRoller-WoD.", None, QtGui.QApplication.UnicodeUTF8))
 		self.action_about.setObjectName(_fromUtf8("action_about"))
@@ -254,4 +241,3 @@ class Ui_MainWindow(object):
 	def retranslateUi(self, MainWindow):
 		pass
 
-from resources import resource_rc
