@@ -26,6 +26,7 @@ along with DiceRoller-WoD.  If not,  see <http://www.gnu.org/licenses/>.
 
 import sys
 import sip
+import atexit
 
 from PyQt4.QtCore import Qt, QCoreApplication
 from PyQt4.QtGui import QWidget, QApplication

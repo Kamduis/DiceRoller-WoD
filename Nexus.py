@@ -45,7 +45,7 @@ from resources import resource_rc
 PROGRAM_NAME = "DiceRoller WoD"
 PROGRAM_VERSION_MAJOR = 0
 PROGRAM_VERSION_MINOR = 2
-PROGRAM_VERSION_CHANGE = 0
+PROGRAM_VERSION_CHANGE = 1
 PROGRAM_DESCRIPTION = "A dice roller for the W10-System (World of Darkness)"
 
 PROGRAM_LANGUAGE_PATH = "lang"
@@ -251,8 +251,8 @@ class Nexus(QMainWindow):
 		Erstelle die Verbindungen zwischen den verschiedenen Klassen und Elementen des Programms.
 		"""
 
-		self.ui.action_about.activated.connect(self.aboutApp)
-		self.ui.action_aboutQt.activated.connect(QApplication.aboutQt)
+		self.ui.action_about.triggered.connect(self.aboutApp)
+		self.ui.action_aboutQt.triggered.connect(QApplication.aboutQt)
 		self.ui.action_houserules.toggled.connect(self.setHouserules)
 		self.ui.pushButton_roll.clicked.connect(self.roll)
 		self.ui.spinBox_pool.valueChanged.connect(self.calcDicePool)
