@@ -37,7 +37,7 @@ class Random(QObject):
 	def __init__(self, parent=None):
 		pass
 
-		
+
 	#@staticmethod
 	#def random(valMax):
 		#"""
@@ -46,7 +46,7 @@ class Random(QObject):
 		
 		#return 1 + qrand() % valMax
 
-		
+
 	@staticmethod
 	def random(valA, valB=0):
 		"""
@@ -61,4 +61,4 @@ class Random(QObject):
 			valueMin = valA
 			valueMax = valB
 			
-		return valueMin + qrand() % (valueMax - valueMin)
+		return valueMin + (qrand() % (valueMax - valueMin + 1))

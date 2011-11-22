@@ -70,7 +70,7 @@ class Die(QObject):
 
 
 	def roll(self):
-		self._rollResult = Random.random(self.__faces)
+		self._rollResult = Random.random(1, self.__faces)
 		#qDebug("Ergebnis: " + unicode(self._rollResult))
 		self.rolled.emit(self._rollResult)
 
