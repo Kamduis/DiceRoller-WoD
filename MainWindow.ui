@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>517</width>
-    <height>326</height>
+    <width>471</width>
+    <height>274</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -29,10 +29,7 @@
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
            <layout class="QFormLayout" name="formLayout">
-            <property name="fieldGrowthPolicy">
-             <enum>QFormLayout::ExpandingFieldsGrow</enum>
-            </property>
-            <item row="1" column="0">
+            <item row="0" column="0">
              <widget class="QLabel" name="label_diceNumber">
               <property name="text">
                <string>&amp;Dice</string>
@@ -42,7 +39,7 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
+            <item row="0" column="1">
              <widget class="QSpinBox" name="spinBox_pool">
               <property name="toolTip">
                <string>The number of dice for this pool without any Modifiers.</string>
@@ -58,7 +55,7 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="0">
+            <item row="1" column="0">
              <widget class="QLabel" name="label">
               <property name="text">
                <string>&amp;Modifier</string>
@@ -68,7 +65,7 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
+            <item row="1" column="1">
              <widget class="QSpinBox" name="spinBox_modifier">
               <property name="toolTip">
                <string>The Modifiers for this roll.</string>
@@ -109,7 +106,7 @@
               </item>
               <item>
                <property name="text">
-                <string>no reroll &amp; subtract 1s</string>
+                <string>subtract 1s</string>
                </property>
               </item>
              </widget>
@@ -131,8 +128,8 @@
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>20</width>
-                <height>40</height>
+                <width>0</width>
+                <height>0</height>
                </size>
               </property>
              </spacer>
@@ -140,6 +137,19 @@
            </layout>
           </item>
          </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item>
          <widget class="QPushButton" name="pushButton_roll">
@@ -151,9 +161,7 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>14</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
+            <pointsize>18</pointsize>
            </font>
           </property>
           <property name="toolTip">
@@ -167,9 +175,6 @@
             <width>32</width>
             <height>32</height>
            </size>
-          </property>
-          <property name="shortcut">
-           <string>Ctrl+R</string>
           </property>
          </widget>
         </item>
@@ -188,15 +193,8 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_6">
-           <item>
-            <widget class="QRadioButton" name="radioButton_target">
-             <property name="text">
-              <string>Target Number</string>
-             </property>
-            </widget>
-           </item>
-           <item>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="1">
             <widget class="QSpinBox" name="spinBox_target">
              <property name="enabled">
               <bool>false</bool>
@@ -212,18 +210,14 @@
              </property>
             </widget>
            </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_5">
-           <item>
+           <item row="1" column="0">
             <widget class="QRadioButton" name="radioButton_maxRolls">
              <property name="text">
               <string>maximum Rolls</string>
              </property>
             </widget>
            </item>
-           <item>
+           <item row="1" column="1">
             <widget class="QSpinBox" name="spinBox_maxRolls">
              <property name="enabled">
               <bool>false</bool>
@@ -239,7 +233,27 @@
              </property>
             </widget>
            </item>
+           <item row="0" column="0">
+            <widget class="QRadioButton" name="radioButton_target">
+             <property name="text">
+              <string>Target Number</string>
+             </property>
+            </widget>
+           </item>
           </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
          </item>
          <item>
           <widget class="QCheckBox" name="checkBox_rollsLimited">
@@ -296,18 +310,14 @@
        </widget>
       </item>
       <item>
-       <widget class="QLCDNumber" name="lcdNumber_successes">
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>40</height>
-         </size>
+       <widget class="QLabel" name="label_successesNumber">
+        <property name="font">
+         <font>
+          <pointsize>24</pointsize>
+         </font>
         </property>
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
-        </property>
-        <property name="segmentStyle">
-         <enum>QLCDNumber::Flat</enum>
+        <property name="text">
+         <string>0</string>
         </property>
        </widget>
       </item>
@@ -383,8 +393,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>517</width>
-     <height>23</height>
+     <width>471</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -397,8 +407,8 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
-    <addaction name="action_aboutQt"/>
     <addaction name="action_about"/>
+    <addaction name="action_aboutQt"/>
    </widget>
    <widget class="QMenu" name="menuExtras">
     <property name="title">
@@ -453,7 +463,6 @@
   <tabstop>comboBox_xAgain</tabstop>
   <tabstop>checkBox_rote</tabstop>
   <tabstop>groupBox_extended</tabstop>
-  <tabstop>spinBox_maxRolls</tabstop>
   <tabstop>checkBox_rollsLimited</tabstop>
  </tabstops>
  <resources/>

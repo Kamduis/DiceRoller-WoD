@@ -43,7 +43,7 @@ else:
 exe = Executable(
 	script="DiceRoller-WoD.py",
 	base = _base
-	)
+)
 
 
 setup(
@@ -51,4 +51,51 @@ setup(
 	version = Nexus.PROGRAM_VERSION_MAJOR,
 	description = Nexus.PROGRAM_DESCRIPTION,
 	executables = [exe]
-	)
+)
+
+
+
+
+#import os
+
+## Unter Windows wird py2exe verwendet, unter anderen Betriebssystemen kommt cx_freeze zum Einsatz.
+#if os.name == "nt":
+	#from distutils.core import setup
+	#import py2exe
+#else:
+	#from cx_Freeze import setup, Executable
+	#import sip
+
+	#import Nexus
+
+
+
+
+
+#if os.name == "nt":
+	#setup(
+		#options = {
+			#"py2exe": {
+				#"dll_excludes": ["MSVCP90.dll"]
+			#}
+		#},
+		#windows=["DiceRoller-WoD.py"]
+	#)
+#else:
+	## Falls unter Windows auch cx_freeze zum Einsatz kommt, muß "base" angepaßt werden.
+	#if os.name == "nt":
+		#_base = "Win32GUI"
+	#else:
+		#_base = "Console"
+
+	#exe = Executable(
+		#script="DiceRoller-WoD.py",
+		#base = _base
+	#)
+
+	#setup(
+		#name = Nexus.PROGRAM_NAME,
+		#version = Nexus.PROGRAM_VERSION_MAJOR,
+		#description = Nexus.PROGRAM_DESCRIPTION,
+		#executables = [exe]
+	#)

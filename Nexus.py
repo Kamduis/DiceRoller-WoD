@@ -27,15 +27,19 @@ import os
 import sys
 import time
 
-from PyQt4.QtCore import Qt, qDebug, QCoreApplication, QTranslator, QLibraryInfo, QObject, QDir, QTimer, QString, QSize, QPoint, QStringList, SIGNAL, SLOT, pyqtSignal
-from PyQt4.QtGui import QWidget, QApplication, QAction, QActionGroup, QSizePolicy, QMainWindow, QFrame, QMenu, QDirModel, QListView, QTreeView, QTableView, QPushButton, QMessageBox, QLabel, QIcon, QPixmap, QGraphicsScene, QGraphicsView
-from PyQt4.QtSvg import *#QSvgWidget, QSvgRenderer, QGraphicsSvgItem
+from PySide.QtCore import *
+from PySide.QtGui import *
+from PySide.QtSvg import *
+# Hiermit kann ich weiterhin ich die Syntax der Signale und Slots so belassen, wie sie in PyQt vorgeschrieben ist.
+from PySide.QtCore import Signal as pyqtSignal
+from PySide.QtCore import Slot as pyqtSlot
 
 from MainWindow import Ui_MainWindow
 from Settings import Settings
 from Random import Random
 from Dice import DieResult
 from DicePool import InstantRoll, ExtendedRoll
+from RollingDieWidget import RollingDieWidget
 
 from resources import resource_rc
 
@@ -54,6 +58,9 @@ CONFIG_FILE = "config.cfg"
 
 DICEROLL_TIMER_INTERVAL = 50
 DICEROLL_TIMER_DELAY = 400
+
+SIDES_DIE = 10
+MAX_DICE_IN_DISPLAY = 10
 
 
 
@@ -84,9 +91,8 @@ class Nexus(QMainWindow):
 
 	In dieser Klasse wird die GUI gesteuert und die Würfelwürfe aufgerufen.
 	"""
-	
-	dicePoolChanged = pyqtSignal(int)
 
+	dicePoolChanged = pyqtSignal(int)
 	xAgainChanged = pyqtSignal(int)
 	cursed = pyqtSignal(bool)
 
@@ -102,16 +108,16 @@ class Nexus(QMainWindow):
 		QApplication.installTranslator( self.translator_app )
 		QApplication.installTranslator( self.translator_qt )
 
-		QWidget.__init__(self,  parent)
+		QMainWindow.__init__(self,  parent)
 
 		QCoreApplication.setOrganizationName("Caern")
 		QCoreApplication.setOrganizationDomain("www.caern.de")
 		QCoreApplication.setApplicationName("DiceRoller WoD")
-		QCoreApplication.setApplicationVersion(QString.number(PROGRAM_VERSION_MAJOR) +
+		QCoreApplication.setApplicationVersion(str(PROGRAM_VERSION_MAJOR) +
 			"." +
-			QString.number(PROGRAM_VERSION_MINOR) +
+			str(PROGRAM_VERSION_MINOR) +
 			"." +
-			QString.number(PROGRAM_VERSION_CHANGE)
+			str(PROGRAM_VERSION_CHANGE)
 		)
 		QApplication.setWindowIcon(QIcon(":/icons/logo/WoD.png"))
 
@@ -120,7 +126,6 @@ class Nexus(QMainWindow):
 		
 		self.createInfo()
 
-		#self.createLanguageMenu()
 		self.instantRoll = InstantRoll()
 		self.extendedRoll = ExtendedRoll()
 
@@ -130,12 +135,13 @@ class Nexus(QMainWindow):
 		self.timerRoll = QTimer()
 		
 		self.populateUi()
+		self.createLanguageMenu()
 		self.createConnections()
 		self.initializing()
 
 		self.setWindowTitle(QCoreApplication.applicationName())
 
-		#self.retranslateUi()
+		self.retranslateUi()
 		
 		## Die von der letzten Benutzung gespeicherte Größe und Position auf dem Bildschirm laden.
 		#self.readSettings()
@@ -158,92 +164,85 @@ class Nexus(QMainWindow):
 		self.ui.action_houserules.setStatusTip(self.ui.action_houserules.toolTip())
 
 
-	#def createLanguageMenu(self):
-		#"""
-		#Erzeugt das Menü zum Umschalten zwischen den möglichen Sprachen.
-		#"""
+	def createLanguageMenu(self):
+		"""
+		Erzeugt das Menü zum Umschalten zwischen den möglichen Sprachen.
+		"""
 
-		#self.menu_language = QMenu( self.tr("&Language") )
-		#self.actionGroup_language = QActionGroup(self)
+		self.menu_language = QMenu( self.tr("&Language") )
+		self.actionGroup_language = QActionGroup(self)
 
-		#self.langPath = getPath() + "/" + PROGRAM_LANGUAGE_PATH
-		#self.dir_qm = QDir( self.langPath );
-		#self.fileNames = self.dir_qm.entryList( QStringList( "DiceRoller-WoD_*.qm" ));
+		self.langPath = getPath() + "/" + PROGRAM_LANGUAGE_PATH
+		self.dir_qm = QDir( self.langPath );
+		self.fileNames = self.dir_qm.entryList( ["DiceRoller-WoD_*.qm"]);
 
-		## Englisch hat keine qm-Datei,  also muß es von Hand hinzugefügt werden.
-		#self.action = QAction( "&1 English",  self.actionGroup_language )
-		#self.action.setCheckable( True )
-		#self.action.setData( "en" )
-		#self.action.setChecked( True )
+		# Englisch hat keine qm-Datei,  also muß es von Hand hinzugefügt werden.
+		self.action = QAction( "&1 English",  self.actionGroup_language )
+		self.action.setCheckable( True )
+		self.action.setData( "en" )
+		self.action.setChecked( True )
 
-		#self.menu_language.addAction( self.action )
-		#self.actionGroup_language.addAction( self.action )
+		self.menu_language.addAction( self.action )
+		self.actionGroup_language.addAction( self.action )
 
-		#iter = 0
-		#for i in self.fileNames:
-			#self.trFilename = unicode(i)
-			#self.locale = unicode(i)
-			#self.locale = self.locale[(self.locale.find( "_" )+1):(self.locale.find( "." ))]
+		iter = 0
+		for i in self.fileNames:
+			self.trFilename = unicode(i)
+			self.locale = unicode(i)
+			self.locale = self.locale[(self.locale.find( "_" )+1):(self.locale.find( "." ))]
 
-			#self.translator = QTranslator()
-			#self.translator.load( self.trFilename,  self.dir_qm.absolutePath() )
-			#self.language = self.translator.translate( "MainWindow",  "English" )
+			self.translator = QTranslator()
+			self.translator.load( self.trFilename,  self.dir_qm.absolutePath() )
+			self.language = self.translator.translate( "MainWindow",  "English" )
 
-			#self.action = QAction( "&" + QString.number(iter + 2) + " " + self.language,  self.actionGroup_language )
-			#self.action.setCheckable( True )
-			#self.action.setData( self.locale )
+			self.action = QAction( "&" + str(iter + 2) + " " + self.language,  self.actionGroup_language )
+			self.action.setCheckable( True )
+			self.action.setData( self.locale )
 
-			#self.menu_language.addAction ( self.action )
-			#self.actionGroup_language.addAction ( self.action )
+			self.menu_language.addAction ( self.action )
+			self.actionGroup_language.addAction ( self.action )
 
-			#iter += 1
+			iter += 1
 
-		#self.actionGroup_language.triggered.connect(self.switchLanguage)
+		self.actionGroup_language.triggered.connect(self.switchLanguage)
 
-		#self.ui.menuBar.insertMenu(self.ui.menuHelp.menuAction(),  self.menu_language)
-
-
-	#def switchLanguage( self,  action ):
-		#"""
-		#Schaltet zwischen den einzelnen Sprachen um.
-		#"""
-
-		#self.locale = action.data().toString();
-		#self.qmPath = getPath() + "/" + PROGRAM_LANGUAGE_PATH
-
-		##if self.translator_app.load( "DiceRoller-WoD_" + self.locale,  self.qmPath ):
-			##qDebug("Hat DiceRoller-WoD_" + self.locale + " geladen.")
-
-		##if self.translator_qt.load( "qt_" + self.locale,  QLibraryInfo.location ( QLibraryInfo.TranslationsPath ) ):
-			##qDebug("Hat qt_" + self.locale + " geladen.")
-
-		## Alle Texte neu setzen
-		#self.retranslateUi()
-		## Seltsamerweise ist retranslate in Ui_MainWindow leer. Ich weiß nicht,  wieso das der Fall ist.
-		#self.ui.retranslateUi(self.ui)
+		self.ui.menuBar.insertMenu(self.ui.menuHelp.menuAction(),  self.menu_language)
 
 
-	#def retranslateUi(self):
-		#"""
-		#Diese Funktion übersetzt alle Texte, welche nicht in der .ui-Datei festgelegt sind, sondern im Quellcode (hier) geschrieben wurden.
-		#"""
+	def switchLanguage( self,  action ):
+		"""
+		Schaltet zwischen den einzelnen Sprachen um.
+		"""
 
-		#self.menu_language.setTitle( self.tr( "&Language" ) )
-		#self.reset()
+		self.locale = str(action.data())
+		self.qmPath = getPath() + "/" + PROGRAM_LANGUAGE_PATH
+
+		if self.translator_app.load( "DiceRoller-WoD_" + self.locale,  self.qmPath ):
+			qDebug("Hat DiceRoller-WoD_" + self.locale + " geladen.")
+
+		if self.translator_qt.load( "qt_" + self.locale,  QLibraryInfo.location ( QLibraryInfo.TranslationsPath ) ):
+			qDebug("Hat qt_" + self.locale + " geladen.")
+
+		# Alle Texte neu setzen
+		self.retranslateUi()
+		# Seltsamerweise ist retranslate in Ui_MainWindow leer. Ich weiß nicht,  wieso das der Fall ist.
+		self.ui.retranslateUi(self)
+
+
+	def retranslateUi(self):
+		"""
+		Diese Funktion übersetzt alle Texte, welche nicht in der .ui-Datei festgelegt sind, sondern im Quellcode (hier) geschrieben wurden.
+		"""
+
+		self.menu_language.setTitle( self.tr( "&Language" ) )
+		self.reset()
 
 
 	def populateUi(self):
-		self.svgRenderer = QSvgRenderer(":/icons/W10.svg")
-		self.scene = QGraphicsScene()
-		self.view = QGraphicsView()
-		self.view.setFrameShape(QFrame.NoFrame)
-		self.view.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-		self.view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-		self.view.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-		self.view.setStyleSheet("background-color: transparent;");
-		
-		self.view.setScene(self.scene)
-		self.ui.horizontalLayout_dice.insertWidget(1, self.view)
+		#self.rollingDie = RollingDieWidget(0)
+		#self.ui.horizontalLayout_dice.insertWidget(1, self.rollingDie)
+		#self.rollingDie.resize(self.rollingDie.renderer().defaultSize())
+		pass
 
 
 	def createConnections(self):
@@ -255,23 +254,23 @@ class Nexus(QMainWindow):
 		self.ui.action_aboutQt.triggered.connect(QApplication.aboutQt)
 		self.ui.action_houserules.toggled.connect(self.setHouserules)
 		self.ui.pushButton_roll.clicked.connect(self.roll)
-		self.ui.spinBox_pool.valueChanged.connect(self.calcDicePool)
+		self.ui.spinBox_pool.valueChanged[int].connect(self.calcDicePool)
 		self.ui.spinBox_pool.valueChanged.connect(self.reset)
-		self.ui.spinBox_modifier.valueChanged.connect(self.calcDicePoolMod)
+		self.ui.spinBox_modifier.valueChanged[int].connect(self.calcDicePoolMod)
 		self.ui.spinBox_modifier.valueChanged.connect(self.reset)
 		self.ui.checkBox_rote.toggled.connect(self.instantRoll.setRote)
 		self.ui.checkBox_rote.toggled.connect(self.extendedRoll.setRote)
 		self.ui.checkBox_rote.toggled.connect(self.reset)
-		self.ui.comboBox_xAgain.activated.connect(self.setXAgainThreshold)
+		self.ui.comboBox_xAgain.activated[int].connect(self.setXAgainThreshold)
 		self.ui.comboBox_xAgain.activated.connect(self.reset)
 		self.ui.groupBox_extended.toggled.connect(self.changeText)
 		self.ui.radioButton_target.toggled.connect(self.changeText)
 		self.ui.radioButton_maxRolls.toggled.connect(self.changeText)
 		self.ui.groupBox_extended.toggled.connect(self.reset)
 		self.ui.radioButton_target.toggled.connect(self.setExtendedMode)
-		self.ui.spinBox_target.valueChanged.connect(self.extendedRoll.setTarget)
+		self.ui.spinBox_target.valueChanged[int].connect(self.extendedRoll.setTarget)
 		self.ui.spinBox_target.valueChanged.connect(self.reset)
-		self.ui.spinBox_maxRolls.valueChanged.connect(self.extendedRoll.setMaxRolls)
+		self.ui.spinBox_maxRolls.valueChanged[int].connect(self.extendedRoll.setMaxRolls)
 		self.ui.spinBox_maxRolls.valueChanged.connect(self.reset)
 		self.ui.checkBox_rollsLimited.toggled.connect(self.extendedRoll.setLimited)
 		self.ui.checkBox_rollsLimited.toggled.connect(self.reset)
@@ -284,9 +283,8 @@ class Nexus(QMainWindow):
 		self.extendedRoll.rollsNeeded.connect(self.setResultRolls)
 		self.instantRoll.rollFinished.connect(self.setResult)
 		self.extendedRoll.rollFinished.connect(self.setResult)
-		
-		self.dicePoolChanged.connect(self.changeDiceDisplay)
 
+		self.dicePoolChanged.connect(self.changeDiceDisplay)
 		self.timerDice.timeout.connect(self.displayDice)
 		self.timerRoll.timeout.connect(self._executeRoll)
 
@@ -302,7 +300,7 @@ class Nexus(QMainWindow):
 		self.ui.pushButton_roll.setIcon(QIcon(":icons/W10_0.svg"))
 		
 		self.ui.action_quit.setMenuRole(QAction.QuitRole)
-		self.ui.action_about.setText(self.tr("About %1...").arg(QApplication.applicationName()))
+		self.ui.action_about.setText(self.tr(str("About %(appName)s..." % {"appName": QApplication.applicationName()})))
 		self.ui.action_about.setMenuRole(QAction.AboutRole)
 
 		self.ui.spinBox_pool.setValue(2)
@@ -314,33 +312,20 @@ class Nexus(QMainWindow):
 		self.ui.groupBox_extended.setChecked(False)
 		self.ui.checkBox_rollsLimited.setChecked(True)
 
-		self.dice = []
-		for i in xrange(10):
-			self.W10_x = QGraphicsSvgItem()
-			self.W10_x.setSharedRenderer(self.svgRenderer)
-			self.W10_x.setElementId("layer" + str(i))
-			#self.W10_x.setVisible(False)
-			# Ich lege diese Liste an, da ich auf die Liste in self.scene irgendwie nicht zugreifen kann.
-			self.dice.append(self.W10_x)
-			#self.scene.addItem(self.W10_x)
-
 
 	def displayDice(self, value=None):
 		"""
 		@todo Der Würfel kann mehrmals in Folge das selbe Ergebnis anzeigen, was dazu führt, daß der Bildablauf zu stocken scheint.
 		"""
 
-		if (value == None):
-			dieValue = Random.random(10)-1
-		else:
-			dieValue = value
-
-		for item in self.scene.items():
-			self.scene.removeItem(item)
-
-		self.scene.addItem(self.dice[dieValue])
-		self.view.setSceneRect(self.scene.itemsBoundingRect())
-		self.view.fitInView(self.dice[dieValue])
+		#if (value == None):
+			#dieValue = Random.random(10)-1
+		#else:
+			#dieValue = value
+		
+		#self.rollingDie.setFace(dieValue)
+		#self.rollingDie.resize(self.rollingDie.sizeHint())
+		pass
 
 
 	def changeDiceDisplay(self, number):
@@ -348,21 +333,6 @@ class Nexus(QMainWindow):
 		Diese Funktion bestimmt, wieviele Würfel angezeigt werden.
 		"""
 		pass
-		
-		#if (self.ui.horizontalLayout_dice.count > 2):
-			#pass
-		
-		#randomValue = Random.random(10)-1
-
-		#for die in xrange(number):
-			#self.__W10_scene = QGraphicsScene()
-			#self.__W10_scene.addItem(self.dice[randomValue])
-			
-			#self.__W10_view = QGraphicsView()
-			#self.__W10_view.setScene(self.__W10_scene)
-			#self.__W10_view.setSceneRect(self.scene.itemsBoundingRect())
-			#self.__W10_view.fitInView(self.dice[randomValue])
-			#self.ui.horizontalLayout_dice.insertWidget(1, self.__W10_view)
 
 
 	def aboutApp(self):
@@ -481,20 +451,20 @@ class Nexus(QMainWindow):
 		self.ui.statusBar.showMessage(self.tr("Result of diceroll is displayed."))
 
 		if (value == DieResult.dramaticFailure):
-			self.ui.label_resultText.setText(self.tr("Dramatic Failure"));
-			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/cnrdelete-all1.png"));
+			self.ui.label_resultText.setText(self.tr(str("Dramatic Failure")))
+			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/cnrdelete-all1.png"))
 			self.displayDice(1)
 		elif (value == DieResult.failure):
-			self.ui.label_resultText.setText(self.tr("Failure"));
-			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/fileclose.png"));
+			self.ui.label_resultText.setText(self.tr(str("Failure")))
+			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/fileclose.png"))
 			self.displayDice(Random.random(2, 7))
 		elif (value == DieResult.success):
-			self.ui.label_resultText.setText(self.tr("Success"));
-			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/ok.png"));
+			self.ui.label_resultText.setText(self.tr(str("Success")))
+			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/ok.png"))
 			self.displayDice(Random.random(8, 9))
 		else:
-			self.ui.label_resultText.setText(self.tr("Exceptional Success"));
-			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/bookmark.png"));
+			self.ui.label_resultText.setText(self.tr(str("Exceptional Success")))
+			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/bookmark.png"))
 			self.displayDice(0)
 
 
@@ -504,7 +474,7 @@ class Nexus(QMainWindow):
 		"""
 
 		if (self.ui.groupBox_extended.isChecked() and self.ui.radioButton_target.isChecked()):
-			self.ui.lcdNumber_successes.display(value)
+			self.ui.label_successesNumber.setText(str(value))
 
 
 	def setResultSuccesses(self, value):
@@ -513,7 +483,7 @@ class Nexus(QMainWindow):
 		"""
 
 		if (not self.ui.groupBox_extended.isChecked() or not self.ui.radioButton_target.isChecked()):
-			self.ui.lcdNumber_successes.display(value)
+			self.ui.label_successesNumber.setText(str(value))
 
 
 	def changeText(self):
@@ -534,7 +504,7 @@ class Nexus(QMainWindow):
 
 		self.ui.label_result.setPixmap(QPixmap(":/icons/actions/fileclose.png"))
 		self.ui.label_resultText.setText(self.tr("No result yet!"))
-		self.ui.lcdNumber_successes.display(0)
+		self.ui.label_successesNumber.setText(str(0))
 		self.ui.statusBar.showMessage(self.tr("Press the Button to roll the dice!"))
 
 

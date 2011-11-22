@@ -25,7 +25,7 @@ along with DiceRoller-WoD.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
-from PyQt4.QtCore import QObject, QTime, qDebug, qsrand, qrand
+from PySide.QtCore import *
 
 
 
