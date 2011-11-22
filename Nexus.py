@@ -239,10 +239,9 @@ class Nexus(QMainWindow):
 
 
 	def populateUi(self):
-		#self.rollingDie = RollingDieWidget(0)
-		#self.ui.horizontalLayout_dice.insertWidget(1, self.rollingDie)
-		#self.rollingDie.resize(self.rollingDie.renderer().defaultSize())
-		pass
+		self.rollingDie = RollingDieWidget(0)
+		self.ui.horizontalLayout_dice.insertWidget(1, self.rollingDie)
+		self.rollingDie.resize(self.rollingDie.renderer().defaultSize())
 
 
 	def createConnections(self):
@@ -285,6 +284,7 @@ class Nexus(QMainWindow):
 		self.extendedRoll.rollFinished.connect(self.setResult)
 
 		self.dicePoolChanged.connect(self.changeDiceDisplay)
+
 		self.timerDice.timeout.connect(self.displayDice)
 		self.timerRoll.timeout.connect(self._executeRoll)
 
@@ -318,14 +318,13 @@ class Nexus(QMainWindow):
 		@todo Der Würfel kann mehrmals in Folge das selbe Ergebnis anzeigen, was dazu führt, daß der Bildablauf zu stocken scheint.
 		"""
 
-		#if (value == None):
-			#dieValue = Random.random(10)-1
-		#else:
-			#dieValue = value
+		if (value == None):
+			dieValue = Random.random(10)-1
+		else:
+			dieValue = value
 		
-		#self.rollingDie.setFace(dieValue)
-		#self.rollingDie.resize(self.rollingDie.sizeHint())
-		pass
+		self.rollingDie.setFace(dieValue)
+		self.rollingDie.resize(self.rollingDie.sizeHint())
 
 
 	def changeDiceDisplay(self, number):

@@ -159,7 +159,7 @@
         <translation>Über DiceRoller-WoD.</translation>
     </message>
     <message>
-        <location filename="Nexus.py" line="197"/>
+        <location filename="Nexus.py" line="198"/>
         <source>English</source>
         <translation>Deutsch</translation>
     </message>
@@ -258,7 +258,7 @@
 <context>
     <name>Nexus</name>
     <message>
-        <location filename="Nexus.py" line="236"/>
+        <location filename="Nexus.py" line="237"/>
         <source>&amp;Language</source>
         <translation>&amp;Sprachen</translation>
     </message>
@@ -278,7 +278,7 @@
 		</translation>
     </message>
     <message>
-        <location filename="Nexus.py" line="371"/>
+        <location filename="Nexus.py" line="354"/>
         <source>
 			&lt;h2&gt;GNU General Public License&lt;/h2&gt;
 			&lt;p&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation,  either version 3 of the License,  or (at your option) any later version.&lt;/p&gt;
@@ -288,7 +288,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="Nexus.py" line="374"/>
+        <location filename="Nexus.py" line="357"/>
         <source>
 			&lt;h2&gt;%1&lt;/h2&gt;
 			&lt;p&gt;%1,  %2,  the %3 and all referring terms and symbols are copyrighted by %4&lt;/p&gt;
@@ -296,7 +296,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Nexus.py" line="467"/>
+        <location filename="Nexus.py" line="450"/>
         <source>Result of diceroll is displayed.</source>
         <translation>Das Ergebnis des Würfelwurf wird angezeigt.</translation>
     </message>
@@ -321,27 +321,27 @@
         <translation type="obsolete">Außerordentlicher Erfolg</translation>
     </message>
     <message>
-        <location filename="Nexus.py" line="511"/>
+        <location filename="Nexus.py" line="494"/>
         <source>Number of rolls needed:</source>
         <translation>Anzahl der notwendigen Würfe:</translation>
     </message>
     <message>
-        <location filename="Nexus.py" line="513"/>
+        <location filename="Nexus.py" line="496"/>
         <source>Number of successes:</source>
         <translation>Erfolge:</translation>
     </message>
     <message>
-        <location filename="Nexus.py" line="522"/>
+        <location filename="Nexus.py" line="505"/>
         <source>No result yet!</source>
         <translation>Bislang noch kein Ergebnis!</translation>
     </message>
     <message>
-        <location filename="Nexus.py" line="524"/>
+        <location filename="Nexus.py" line="507"/>
         <source>Press the Button to roll the dice!</source>
         <translation>Drücken, um zu würfeln!</translation>
     </message>
     <message>
-        <location filename="Nexus.py" line="364"/>
+        <location filename="Nexus.py" line="347"/>
         <source>
 			&lt;h1&gt;%1&lt;/h1&gt;
 			&lt;h2&gt;Version: %2&lt;/h2&gt;
