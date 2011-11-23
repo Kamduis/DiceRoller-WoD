@@ -99,7 +99,7 @@ class Nexus(QMainWindow):
 
 	def __init__(self,  parent=None):
 		"""
-		Konstruktor 
+		Konstruktor
 		"""
 
 		self.translator_app = QTranslator()
@@ -123,7 +123,7 @@ class Nexus(QMainWindow):
 
 		self.ui = Ui_MainWindow()
 		self.ui.setupUi(self)
-		
+
 		self.createInfo()
 
 		self.instantRoll = InstantRoll()
@@ -133,7 +133,7 @@ class Nexus(QMainWindow):
 		self.timerDice = QTimer()
 		# Verzögert die tatsächliche Ausführung des Würfelwurfs.
 		self.timerRoll = QTimer()
-		
+
 		self.populateUi()
 		self.createLanguageMenu()
 		self.createConnections()
@@ -142,7 +142,7 @@ class Nexus(QMainWindow):
 		self.setWindowTitle(QCoreApplication.applicationName())
 
 		self.retranslateUi()
-		
+
 		## Die von der letzten Benutzung gespeicherte Größe und Position auf dem Bildschirm laden.
 		#self.readSettings()
 
@@ -239,9 +239,9 @@ class Nexus(QMainWindow):
 
 
 	def populateUi(self):
-		self.rollingDie = RollingDieWidget(0)
+		self.rollingDie = RollingDieWidget(10, 1)
 		self.ui.horizontalLayout_dice.insertWidget(1, self.rollingDie)
-		self.rollingDie.resize(self.rollingDie.renderer().defaultSize())
+		self.rollingDie.resize(10,10)
 
 
 	def createConnections(self):
@@ -298,7 +298,7 @@ class Nexus(QMainWindow):
 		self.ui.action_about.setIcon(QIcon(":/icons/logo/WoD.png"))
 		self.ui.pushButton_quit.setIcon(self.ui.action_quit.icon())
 		self.ui.pushButton_roll.setIcon(QIcon(":icons/W10_0.svg"))
-		
+
 		self.ui.action_quit.setMenuRole(QAction.QuitRole)
 		self.ui.action_about.setText(self.tr(str("About %(appName)s..." % {"appName": QApplication.applicationName()})))
 		self.ui.action_about.setMenuRole(QAction.AboutRole)
@@ -322,7 +322,7 @@ class Nexus(QMainWindow):
 			dieValue = Random.random(10)-1
 		else:
 			dieValue = value
-		
+
 		self.rollingDie.setFace(dieValue)
 		self.rollingDie.resize(self.rollingDie.sizeHint())
 
@@ -394,7 +394,7 @@ class Nexus(QMainWindow):
 		self.instantRoll.poolSize = value + self.ui.spinBox_modifier.value()
 		self.extendedRoll.poolSize = self.instantRoll.poolSize
 		self.extendedRoll.limit = value
-		
+
 		self.dicePoolChanged.emit(self.instantRoll.poolSize)
 
 

@@ -2,6 +2,7 @@
   <qresource prefix="/icons">
     <file>logo/WoD.png</file>
     <file>W10.svg</file>
+    <file>W6.svg</file>
     <file>W10_0.svg</file>
     <file>W10_1.svg</file>
     <file>W10_2.svg</file>
