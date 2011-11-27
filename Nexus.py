@@ -26,6 +26,7 @@ along with DiceRoller-WoD.  If not,  see <http://www.gnu.org/licenses/>.
 import os
 import sys
 import time
+import gc
 
 from PySide.QtCore import *
 from PySide.QtGui import *
@@ -36,10 +37,12 @@ from PySide.QtCore import Slot as pyqtSlot
 
 from MainWindow import Ui_MainWindow
 from Settings import Settings
+import Error
+from FuncName import *
 from Random import Random
 from Dice import DieResult
 from DicePool import InstantRoll, ExtendedRoll
-from RollingDieWidget import RollingDieWidget
+from RollingDieWidget import RollingDiesWidget
 
 from resources import resource_rc
 
@@ -57,10 +60,9 @@ PROGRAM_LANGUAGE_PATH = "lang"
 CONFIG_FILE = "config.cfg"
 
 DICEROLL_TIMER_INTERVAL = 50
-DICEROLL_TIMER_DELAY = 400
+DICEROLL_TIMER_DELAY = 500
 
 SIDES_DIE = 10
-MAX_DICE_IN_DISPLAY = 10
 
 
 
@@ -101,6 +103,8 @@ class Nexus(QMainWindow):
 		"""
 		Konstruktor
 		"""
+
+		#gc.enable()
 
 		self.translator_app = QTranslator()
 		self.translator_qt = QTranslator()
@@ -239,9 +243,18 @@ class Nexus(QMainWindow):
 
 
 	def populateUi(self):
-		self.rollingDie = RollingDieWidget(10, 1)
-		self.ui.horizontalLayout_dice.insertWidget(1, self.rollingDie)
-		self.rollingDie.resize(10,10)
+		self.rollingDies = RollingDiesWidget(29, 10)
+		self.ui.horizontalLayout_dice.insertWidget(1, self.rollingDies)
+
+		#self.rollingDie = RollingDieWidget(10, 1)
+		#self.ui.gridLayout_dice.addWidget(self.rollingDie)
+		##self.rollingDie.resize(100,100)
+
+		#for i in xrange(6):
+			#self.rollingDie_x = RollingDieWidget(10, i+1)
+			#self.ui.horizontalLayout_dice.insertWidget(2, self.rollingDie_x)
+			#self.rollingDie_x.setFace(Random.random(1,6))
+		pass
 
 
 	def createConnections(self):
@@ -297,7 +310,7 @@ class Nexus(QMainWindow):
 		self.ui.action_quit.setIcon(QIcon(":/icons/actions/exit.png"))
 		self.ui.action_about.setIcon(QIcon(":/icons/logo/WoD.png"))
 		self.ui.pushButton_quit.setIcon(self.ui.action_quit.icon())
-		self.ui.pushButton_roll.setIcon(QIcon(":icons/W10_0.svg"))
+		self.ui.pushButton_roll.setIcon(QIcon(":icons/W10_10.svg"))
 
 		self.ui.action_quit.setMenuRole(QAction.QuitRole)
 		self.ui.action_about.setText(self.tr(str("About %(appName)s..." % {"appName": QApplication.applicationName()})))
@@ -319,18 +332,68 @@ class Nexus(QMainWindow):
 		"""
 
 		if (value == None):
-			dieValue = Random.random(10)-1
+			dieValue = Random.random(1, 10)
+			#print dieValue
 		else:
 			dieValue = value
 
-		self.rollingDie.setFace(dieValue)
-		self.rollingDie.resize(self.rollingDie.sizeHint())
+		try:
+			#self.rollingDie.setFace(dieValue)
+			pass
+		except Error.ErrValue, e:
+			print e.msg
+		#self.rollingDie.resize(self.rollingDie.sizeHint())
 
 
 	def changeDiceDisplay(self, number):
 		"""
 		Diese Funktion bestimmt, wieviele Würfel angezeigt werden.
 		"""
+
+		#self.diceNumber = number
+		#if number < 1:
+			#self.diceNumber = 1
+
+		## Aus mir unerfindlichen Gründen steigt Python bei dieser Schleife mit einem SegFault aus. Allerdings immer nach einer unterschiedlichen Anzahl von Klicks auf die Würfelanzahl.
+		##while self.ui.horizontalLayout_dice.count() > 2:
+			##widget = self.ui.horizontalLayout_dice.itemAt(1).widget()
+			##self.ui.horizontalLayout_dice.removeWidget(widget)
+			##widget.setParent(None)
+			##del widget
+
+		#print self.ui.gridLayout_dice.rowCount(), self.ui.gridLayout_dice.columnCount()
+		#print type(self.ui.gridLayout_dice.itemAtPosition(0, 0))
+
+		## Exception bei dem Klicken auf 0 Würfel. Da gibt es Probleme
+		#if (self.ui.gridLayout_dice.rowCount() > 0 and self.ui.gridLayout_dice.columnCount() > 0):
+			#rows = range(self.ui.gridLayout_dice.rowCount())
+			#columns = range(self.ui.gridLayout_dice.columnCount())
+			#print rows,columns
+			#for i in rows[::-1]:
+				#print "Test"
+				#for j in columns[::-1]:
+					#print "working in cell %(row)i, %(column)i" % {"row": i, "column": j }
+					#print type(self.ui.gridLayout_dice.itemAtPosition(i, j))
+					#widget = self.ui.gridLayout_dice.itemAtPosition(i, j).widget()
+					#self.ui.gridLayout_dice.removeWidget(widget)
+					#widget.setParent(None)
+					##del widget
+
+		#numOfDice = 0
+		#i = 0
+		#while numOfDice < self.diceNumber:
+			#for j in xrange(MAX_DICE_IN_ROW):
+				#self.__rollingDie = RollingDieWidget(SIDES_DIE)
+				#self.ui.gridLayout_dice.addWidget(self.__rollingDie, i, j)
+				#numOfDice += 1
+
+				#if numOfDice >= self.diceNumber:
+					#break
+
+			#i += 1
+			
+			
+		self.rollingDies.setNumber(number)
 		pass
 
 

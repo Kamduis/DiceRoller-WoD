@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Tue Nov 22 23:56:23 2011
+# Created: Fri Nov 25 18:29:25 2011
 #      by: pyside-uic 0.2.11 running on PySide 1.0.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -146,6 +146,9 @@ class Ui_MainWindow(object):
 		self.horizontalLayout_dice.setObjectName("horizontalLayout_dice")
 		spacerItem5 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
 		self.horizontalLayout_dice.addItem(spacerItem5)
+		self.gridLayout_dice = QtGui.QGridLayout()
+		self.gridLayout_dice.setObjectName("gridLayout_dice")
+		self.horizontalLayout_dice.addLayout(self.gridLayout_dice)
 		spacerItem6 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
 		self.horizontalLayout_dice.addItem(spacerItem6)
 		self.verticalLayout_4.addWidget(self.frame_dice)

@@ -370,6 +370,9 @@
         </spacer>
        </item>
        <item>
+        <layout class="QGridLayout" name="gridLayout_dice"/>
+       </item>
+       <item>
         <spacer name="horizontalSpacer_3">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>

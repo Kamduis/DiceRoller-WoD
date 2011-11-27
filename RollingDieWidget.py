@@ -29,52 +29,48 @@ from PySide.QtCore import *
 from PySide.QtGui import *
 from PySide.QtSvg import *
 
-from Error import ErrValue
+import Error
 from Random import Random
+from FuncName import *
 
 
 
 
-WIDGET_SIZE = 80
+WIDGET_SIZE = 50
 
 
 
 
-class RollingDieWidget(QGraphicsView):
+class RollingDieWidget(QLabel):
 	"""
 	Stellt das Bild eines "rollenden" Würfels dar. Diese Klasse setzt derzeit einen W6 oder W10 voraus. Nur für diese Würfel existieren Bilder.
 	"""
 
 	faceChanged = Signal(int)
-	facesChanged = Signal(int)
+	dieChanged = Signal(int)
 
 
-	def __init__(self, faces=10, face=1, parent=None):
-		QGraphicsView.__init__(self, parent)
+	def __init__(self, die=10, face=1, parent=None):
+		QLabel.__init__(self, parent)
 
-		self.__faces = faces
+		self.__die = die
 		self.__face = face
-		self.__renderer = QSvgRenderer(":icons/W" + str(faces) + ".svg")
 		self.__dieSides = []
 
-		self.__scene = QGraphicsScene()
-		self.setScene(self.__scene)
-		self.resize(WIDGET_SIZE, WIDGET_SIZE)
+		self.setScaledContents(True)
+		self.setMaximumSize(WIDGET_SIZE, WIDGET_SIZE)
+		#self.resize(10,10)
+		#self.setSizePolicy(QSizePolicy.Ignored,QSizePolicy.Ignored)
+		#self.setSizePolicy(QSizePolicy.Fixed,QSizePolicy.Fixed)
 
-		#self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-		#self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-		self.setFrameShape(QFrame.NoFrame)
-		self.setStyleSheet("background: transparent;");
+		self.__changeDie(die)
+		self.__showFace(face)
 
-		# Den Würfel anzeigen.
-		self.__changeDie(faces)
-		self.__displayFace(face)
-
-		self.facesChanged.connect(self.__changeDie)
-		self.faceChanged.connect(self.__displayFace)
+		self.dieChanged.connect(self.__changeDie)
+		self.faceChanged.connect(self.__showFace)
 
 
-	def getFace(self):
+	def face(self):
 		return self.__face
 
 
@@ -84,108 +80,143 @@ class RollingDieWidget(QGraphicsView):
 			self.faceChanged.emit(face)
 
 
-	# folgende Zeile erzeugt das Property-Attribut
-	face = property(getFace, setFace)
+	def die(self):
+		return self.__die
 
 
-	def getFaces(self):
-		return self.__faces
+	def setDie(self, die):
+		if (type(die) in (float, int) and self.__die != die):
+			self.__die = die
+			self.dieChanged.emit(die)
 
 
-	def setFaces(self, faces):
-		if (type(faces) in (float, int) and self.__faces != faces):
-			self.__faces = faces
-			self.facesChanged.emit(faces)
-
-
-	# folgende Zeile erzeugt das Property-Attribut
-	faces = property(getFaces, setFaces)
-
-
-	def __displayFace(self, value):
+	def __changeDie(self, die):
 		"""
-		Zeigt die ausgewählte Seite des Würfels an.
+		Tauscht den aktuellen Würfel gegen einen Würfel mit der angegebenen Seitenzahl aus.
 		"""
 
-		# Die anzuzeigende Augenzahl muß natürlich auf dem Würfel vorhanden sein.
-		if (type(value) in (float, int) and value in xrange(self.faces)):
-			for item in self.__scene.items():
-				self.__scene.removeItem(item)
+		for i in xrange(die):
+			# Der Iterator läuft von 0 ab, aber Würfel beginnen mit der Augenzahl 1.
+			# Dies gilt auch für den W10, der zwar theoretisch die Augenzahl 0 besitzt, aber wir betonen, dies sei Augenzahl 10.
+			self.__dieSides.append(":icons/W%(die)i_%(face)i.svg" % {"die": die, "face": i+1})
 
-			# Die 1. Würfelseite ist die 1, allerdings ist diese an Indexposition 0 gespeichert.
-			self.__scene.addItem(self.__dieSides[value-1])
-			self.resize(WIDGET_SIZE, WIDGET_SIZE)
-			#self.fitInView(self.__dieSides[value-1])
+		# Wird die Würfel getauscht, wird immer die Zahl 1 angezeigt, die einzige Zahl die jeder Würfel besitzt.
+		self.__showFace(1)
 
 
-	def __changeDie(self, value):
+	def __showFace(self, face):
 		"""
-		Zeigt den Würfel mit der passenden Seitenzahl an.
+		Zeigt die Würfelseite mit der angegebenen Augenzahl an.
 		"""
 
-		if self.__dieSides:
-			del self.__dieSides[:]
-
-		for i in xrange(value):
-			self.__WXX_x = QGraphicsSvgItem()
-			self.__WXX_x.setSharedRenderer(self.__renderer)
-			self.__WXX_x.setElementId("layer" + str(i+1))
-			self.__dieSides.append(self.__WXX_x)
-
-		# Ist die zuvor angezeigt Augenzahl höher als die Seitenzahl des neuen Würfels, muß auf dessen Maximal-Augenzahl umgeschalten werden.
-		if self.__face > value:
-			setFace(value)
+		# Es wird die absolute Augenazhl angegeben, aber die tatsächliche Indexposition dieser Würfelseite ist um 1 Stelle kleiner.
+		self.setPixmap(self.__dieSides[face-1])
+		#print self.__class__, funcName(), self.__dieSides[face-1]
 
 
 
 
-#class RollingDieWidget(QSvgWidget):
-	#"""
-	#Stellt das Bild eines Rollenden Würfels dar
-	#"""
-
-	#faceChanged = Signal(int)
-
-	#__W10 = (
-		#":icons/W10_0.svg",
-		#":icons/W10_1.svg",
-		#":icons/W10_2.svg",
-		#":icons/W10_3.svg",
-		#":icons/W10_4.svg",
-		#":icons/W10_5.svg",
-		#":icons/W10_6.svg",
-		#":icons/W10_7.svg",
-		#":icons/W10_8.svg",
-		#":icons/W10_9.svg",
-	#)
-
-
-	#def __init__(self, face=0, parent=None):
-		#QSvgWidget.__init__(self, parent)
-
-		#self.__face = face
-		#self.load(self.__W10[face])
-
-		#self.faceChanged.connect(self.display)
-
-
-	#def getFace(self):
-		#return self.__face
-
-
-	#def setFace(self, face):
-		#if (type(face) in (float, int) and self.__face != face):
-			#self.__face = face
-			#self.faceChanged.emit(face)
-
-
-	## folgende Zeile erzeugt das Property-Attribut
-	#face = property(getFace, setFace)
-
-
-	#def display(self, value):
-		#self.load(self.__W10[value])
+MAX_DICE_IN_DISPLAY = 10
+MAX_DICE_IN_ROW = 10
 
 
 
+
+class RollingDiesWidget(QWidget):
+	"""
+	Stellt mehrere "rollende"" Würfel dar.
+	"""
+
+	numberChanged = Signal(int)
+
+
+	def __init__(self, number=1, die=10, parent=None):
+		QWidget.__init__(self, parent)
+
+		self.__layout = QGridLayout()
+		self.setLayout(self.__layout)
+		
+		self.__numOfDies = number
+		self.__die = die
+		self.__buildMatrix(self.__numOfDies)
+		
+		self.numberChanged.connect(self.__buildMatrix)
+		
+		
+	def number(self):
+		return self.__numOfDies
+		
+	
+	def setNumber(self, number):
+		if self.__numOfDies != number:
+			self.__numOfDies = number
+			
+			self.numberChanged.emit(number)
+
+
+	def __buildMatrix(self, numOfDies):
+		"""
+		Baut die Matrix aus Würfeln auf.
+		"""
+		
+		# Es wird nur gelöscht, was gelöscht werden muß. Danach muß nur der fehlende Rest aufgefüllt werden.
+		print self.__layout.count()
+		if self.__layout.count() > numOfDies:
+			rows = range(self.__layout.rowCount())
+			columns = range(self.__layout.columnCount())
+			for i in rows[::-1]:
+				# Für den Schleifenabbruch
+				breakLoop = False
+
+				for j in columns[::-1]:
+					print "Index %(row)i, %(column)i" \
+						% {
+							"row": i, 
+							"column": j,
+						}
+
+					dieWidget = self.__layout.itemAtPosition(i, j)
+					# Wenn die letzte Zeile des GridLayouts nicht gefüllt ist, marschiert diese verschlachtelte Schleife dennoch über jede einzelne Zelle. Aus leeren Zellen soll natürlich nichts entfernt und gelöscht werden.
+					if type(dieWidget) == type(None):
+						continue
+
+					# Raus aus dem Layout heißt nicht, daß das Bild verschwindet.
+					self.__layout.removeItem(dieWidget)
+					# Jetzt kann der Garbage Collector den Würfel entfernen.
+					dieWidget.widget().setParent(None)
+					del dieWidget
+					
+					# Aufhören, wenn keine Würfel mehr entfernt werden müssen.
+					if self.__layout.count() <= numOfDies:
+						breakLoop = True
+						print self.__layout.count()
+						break
+					
+				if breakLoop:
+					break
+
+		# Leere Zeilen werden nicht einfach aus dem Layout gelöscht, also muß ich aufpassen, wie ich sie zähle.
+		print self.__layout.rowCount(), self.__layout.columnCount()
+		self.__diceShown = self.__layout.count()
+		self.__indexOfRow = self.__diceShown / MAX_DICE_IN_ROW
+		self.__indexOfColumn = self.__diceShown % MAX_DICE_IN_ROW
+
+		print "Index %(row)i, %(column)i" \
+			% {
+				"row": self.__indexOfRow, 
+				"column": self.__indexOfColumn,
+			}
+
+		while self.__diceShown < numOfDies:
+			self.__rollingDie = RollingDieWidget(self.__die, 1)
+			self.__layout.addWidget(self.__rollingDie, self.__indexOfRow, self.__indexOfColumn)
+			
+			self.__diceShown += 1
+			
+			# Ist die Zeile voll, muß mit der nächsten begonnen werden.
+			if self.__indexOfColumn < MAX_DICE_IN_ROW - 1:
+				self.__indexOfColumn += 1
+			else:
+				self.__indexOfColumn = 0
+				self.__indexOfRow += 1
 
