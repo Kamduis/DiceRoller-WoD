@@ -36,14 +36,14 @@ from FuncName import *
 
 
 
-WIDGET_SIZE = 50
+WIDGET_SIZE = 40
 
 
 
 
-class RollingDieWidget(QLabel):
+class DieWidget(QLabel):
 	"""
-	Stellt das Bild eines "rollenden" Würfels dar. Diese Klasse setzt derzeit einen W6 oder W10 voraus. Nur für diese Würfel existieren Bilder.
+	Ein Widget mit dem Bild eines Würfels. Diese Klasse setzt derzeit einen W6 oder W10 voraus. Nur für diese Würfel existieren Bilder.
 	"""
 
 	faceChanged = Signal(int)
@@ -116,13 +116,12 @@ class RollingDieWidget(QLabel):
 
 
 
-MAX_DICE_IN_DISPLAY = 10
 MAX_DICE_IN_ROW = 10
 
 
 
 
-class RollingDiesWidget(QWidget):
+class DiesWidget(QWidget):
 	"""
 	Stellt mehrere "rollende"" Würfel dar.
 	"""
@@ -135,22 +134,22 @@ class RollingDiesWidget(QWidget):
 
 		self.__layout = QGridLayout()
 		self.setLayout(self.__layout)
-		
+
 		self.__numOfDies = number
 		self.__die = die
 		self.__buildMatrix(self.__numOfDies)
-		
+
 		self.numberChanged.connect(self.__buildMatrix)
-		
-		
+
+
 	def number(self):
 		return self.__numOfDies
-		
-	
+
+
 	def setNumber(self, number):
 		if self.__numOfDies != number:
 			self.__numOfDies = number
-			
+
 			self.numberChanged.emit(number)
 
 
@@ -158,65 +157,86 @@ class RollingDiesWidget(QWidget):
 		"""
 		Baut die Matrix aus Würfeln auf.
 		"""
-		
-		# Es wird nur gelöscht, was gelöscht werden muß. Danach muß nur der fehlende Rest aufgefüllt werden.
-		print self.__layout.count()
-		if self.__layout.count() > numOfDies:
-			rows = range(self.__layout.rowCount())
-			columns = range(self.__layout.columnCount())
-			for i in rows[::-1]:
-				# Für den Schleifenabbruch
-				breakLoop = False
 
-				for j in columns[::-1]:
-					print "Index %(row)i, %(column)i" \
-						% {
-							"row": i, 
-							"column": j,
-						}
+		# Es gibt immer den Chance roll
+		if numOfDies < 1:
+			self.__poolSize = 1
+		else:
+			self.__poolSize = numOfDies
 
-					dieWidget = self.__layout.itemAtPosition(i, j)
-					# Wenn die letzte Zeile des GridLayouts nicht gefüllt ist, marschiert diese verschlachtelte Schleife dennoch über jede einzelne Zelle. Aus leeren Zellen soll natürlich nichts entfernt und gelöscht werden.
-					if type(dieWidget) == type(None):
-						continue
+		## Es wird nur gelöscht, was gelöscht werden muß. Danach muß nur der fehlende Rest aufgefüllt werden.
+		##print self.__layout.count()
+		#if self.__layout.count() > self.__poolSize:
+			#rows = range(self.__layout.rowCount())
+			#columns = range(self.__layout.columnCount())
+			#for i in rows[::-1]:
+				## Für den Schleifenabbruch
+				#breakLoop = False
 
-					# Raus aus dem Layout heißt nicht, daß das Bild verschwindet.
-					self.__layout.removeItem(dieWidget)
-					# Jetzt kann der Garbage Collector den Würfel entfernen.
-					dieWidget.widget().setParent(None)
-					del dieWidget
-					
-					# Aufhören, wenn keine Würfel mehr entfernt werden müssen.
-					if self.__layout.count() <= numOfDies:
-						breakLoop = True
-						print self.__layout.count()
-						break
-					
-				if breakLoop:
-					break
+				#for j in columns[::-1]:
+					##print "Index %(row)i, %(column)i" \
+						##% {
+							##"row": i,
+							##"column": j,
+						##}
 
-		# Leere Zeilen werden nicht einfach aus dem Layout gelöscht, also muß ich aufpassen, wie ich sie zähle.
-		print self.__layout.rowCount(), self.__layout.columnCount()
+					#widget = self.__layout.itemAtPosition(i, j)
+					## Wenn die letzte Zeile des GridLayouts nicht gefüllt ist, marschiert diese verschlachtelte Schleife dennoch über jede einzelne Zelle. Aus leeren Zellen soll natürlich nichts entfernt und gelöscht werden.
+					#if type(widget) == type(None):
+						#continue
+
+					## Raus aus dem Layout heißt nicht, daß das Bild verschwindet.
+					#self.__layout.removeItem(widget)
+					## Jetzt kann der Garbage Collector den Würfel entfernen.
+					#widget.widget().setParent(None)
+					#del widget
+
+					## Aufhören, wenn keine Würfel mehr entfernt werden müssen.
+					#if self.__layout.count() <= self.__poolSize:
+						#breakLoop = True
+						#break
+
+				#if breakLoop:
+					#break
+
+		# Das QGridLayout löscht leere Zeilen und Spalten nicht. Es kann nur wachsen, nicht schrumpfen. Deswegen kann rowCount() und columnCount() nicht genutzt werden.
 		self.__diceShown = self.__layout.count()
 		self.__indexOfRow = self.__diceShown / MAX_DICE_IN_ROW
 		self.__indexOfColumn = self.__diceShown % MAX_DICE_IN_ROW
 
-		print "Index %(row)i, %(column)i" \
-			% {
-				"row": self.__indexOfRow, 
-				"column": self.__indexOfColumn,
-			}
+		#print "Index %(row)i, %(column)i" \
+			#% {
+				#"row": self.__indexOfRow,
+				#"column": self.__indexOfColumn,
+			#}
 
-		while self.__diceShown < numOfDies:
-			self.__rollingDie = RollingDieWidget(self.__die, 1)
-			self.__layout.addWidget(self.__rollingDie, self.__indexOfRow, self.__indexOfColumn)
-			
+		while self.__diceShown < self.__poolSize:
+			self.__dieWidget = DieWidget(self.__die, 1)
+			self.__layout.addWidget(self.__dieWidget, self.__indexOfRow, self.__indexOfColumn)
+
 			self.__diceShown += 1
-			
+
 			# Ist die Zeile voll, muß mit der nächsten begonnen werden.
 			if self.__indexOfColumn < MAX_DICE_IN_ROW - 1:
 				self.__indexOfColumn += 1
 			else:
 				self.__indexOfColumn = 0
 				self.__indexOfRow += 1
+
+
+
+
+class RollingDiesWidget(DiesWidget):
+	"""
+	Stellt mehrere "rollende"" Würfel dar.
+	"""
+
+	numberChanged = Signal(int)
+
+
+	def __init__(self, number=1, die=10, parent=None):
+		DiesWidget.__init__(self, number, die, parent)
+
+
+
 

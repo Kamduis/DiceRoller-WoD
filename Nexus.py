@@ -63,6 +63,7 @@ DICEROLL_TIMER_INTERVAL = 50
 DICEROLL_TIMER_DELAY = 500
 
 SIDES_DIE = 10
+MAX_DICE_IN_DISPLAY = 10
 
 
 
@@ -391,8 +392,8 @@ class Nexus(QMainWindow):
 					#break
 
 			#i += 1
-			
-			
+
+
 		self.rollingDies.setNumber(number)
 		pass
 
@@ -467,7 +468,9 @@ class Nexus(QMainWindow):
 		"""
 
 		self.instantRoll.poolSize = value + self.ui.spinBox_pool.value()
-		self.extendedRoll.poolSize = value + self.ui.spinBox_pool.value()
+		self.extendedRoll.poolSize = self.instantRoll.poolSize
+
+		self.dicePoolChanged.emit(self.instantRoll.poolSize)
 
 
 	def setHouserules(self, value):
