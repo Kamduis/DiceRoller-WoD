@@ -24,19 +24,21 @@ along with DiceRoller-WoD.  If not,  see <http://www.gnu.org/licenses/>.
 """
 
 
+
+
 import sys
 #import sip
 #import atexit	# Muß importiert werden, damit cx_freeze unter Windows funktioniert.
 
 from PySide.QtGui import *
 
-from src.Nexus import Nexus
+from src.MainWindow import MainWindow
 
 
 
 
 if __name__ == "__main__":
 	app = QApplication(sys.argv)
-	myapp = Nexus()
+	myapp = MainWindow()
 	myapp.show()
 	sys.exit(app.exec_())

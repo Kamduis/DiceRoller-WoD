@@ -1,239 +1,603 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'MainWindow.ui'
-#
-# Created: Fri Nov 25 18:29:25 2011
-#      by: pyside-uic 0.2.11 running on PySide 1.0.6
-#
-# WARNING! All changes made in this file will be lost!
+"""
+Copyright (C) 2010 by Victor von Rhein
+victor@caern.de
 
-from PySide import QtCore, QtGui
+This file is part of DiceRoller-WoD.
 
-class Ui_MainWindow(object):
-	def setupUi(self, MainWindow):
-		MainWindow.setObjectName("MainWindow")
-		MainWindow.resize(471, 274)
-		sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
-		sizePolicy.setHorizontalStretch(0)
-		sizePolicy.setVerticalStretch(0)
-		sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
-		MainWindow.setSizePolicy(sizePolicy)
-		self.centralWidget = QtGui.QWidget(MainWindow)
-		self.centralWidget.setObjectName("centralWidget")
-		self.verticalLayout_4 = QtGui.QVBoxLayout(self.centralWidget)
-		self.verticalLayout_4.setObjectName("verticalLayout_4")
-		self.horizontalLayout_4 = QtGui.QHBoxLayout()
-		self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-		self.verticalLayout = QtGui.QVBoxLayout()
-		self.verticalLayout.setObjectName("verticalLayout")
-		self.horizontalLayout_2 = QtGui.QHBoxLayout()
-		self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-		self.formLayout = QtGui.QFormLayout()
-		self.formLayout.setObjectName("formLayout")
-		self.label_diceNumber = QtGui.QLabel(self.centralWidget)
-		self.label_diceNumber.setObjectName("label_diceNumber")
-		self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.label_diceNumber)
-		self.spinBox_pool = QtGui.QSpinBox(self.centralWidget)
-		self.spinBox_pool.setMinimum(0)
-		self.spinBox_pool.setMaximum(999)
-		self.spinBox_pool.setProperty("value", 10)
-		self.spinBox_pool.setObjectName("spinBox_pool")
-		self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.spinBox_pool)
-		self.label = QtGui.QLabel(self.centralWidget)
-		self.label.setObjectName("label")
-		self.formLayout.setWidget(1, QtGui.QFormLayout.LabelRole, self.label)
-		self.spinBox_modifier = QtGui.QSpinBox(self.centralWidget)
-		self.spinBox_modifier.setMinimum(-99)
-		self.spinBox_modifier.setObjectName("spinBox_modifier")
-		self.formLayout.setWidget(1, QtGui.QFormLayout.FieldRole, self.spinBox_modifier)
-		self.horizontalLayout_2.addLayout(self.formLayout)
-		self.verticalLayout_2 = QtGui.QVBoxLayout()
-		self.verticalLayout_2.setObjectName("verticalLayout_2")
-		self.comboBox_xAgain = QtGui.QComboBox(self.centralWidget)
-		self.comboBox_xAgain.setObjectName("comboBox_xAgain")
-		self.comboBox_xAgain.addItem("")
-		self.comboBox_xAgain.addItem("")
-		self.comboBox_xAgain.addItem("")
-		self.comboBox_xAgain.addItem("")
-		self.comboBox_xAgain.addItem("")
-		self.verticalLayout_2.addWidget(self.comboBox_xAgain)
-		self.checkBox_rote = QtGui.QCheckBox(self.centralWidget)
-		self.checkBox_rote.setObjectName("checkBox_rote")
-		self.verticalLayout_2.addWidget(self.checkBox_rote)
-		spacerItem = QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-		self.verticalLayout_2.addItem(spacerItem)
-		self.horizontalLayout_2.addLayout(self.verticalLayout_2)
-		self.verticalLayout.addLayout(self.horizontalLayout_2)
-		spacerItem1 = QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-		self.verticalLayout.addItem(spacerItem1)
-		self.pushButton_roll = QtGui.QPushButton(self.centralWidget)
-		self.pushButton_roll.setMinimumSize(QtCore.QSize(0, 50))
-		font = QtGui.QFont()
-		font.setPointSize(18)
-		self.pushButton_roll.setFont(font)
-		self.pushButton_roll.setIconSize(QtCore.QSize(32, 32))
-		self.pushButton_roll.setObjectName("pushButton_roll")
-		self.verticalLayout.addWidget(self.pushButton_roll)
-		self.horizontalLayout_4.addLayout(self.verticalLayout)
-		self.groupBox_extended = QtGui.QGroupBox(self.centralWidget)
-		self.groupBox_extended.setCheckable(True)
-		self.groupBox_extended.setObjectName("groupBox_extended")
-		self.verticalLayout_3 = QtGui.QVBoxLayout(self.groupBox_extended)
-		self.verticalLayout_3.setObjectName("verticalLayout_3")
-		self.gridLayout = QtGui.QGridLayout()
-		self.gridLayout.setObjectName("gridLayout")
-		self.spinBox_target = QtGui.QSpinBox(self.groupBox_extended)
-		self.spinBox_target.setEnabled(False)
-		self.spinBox_target.setMinimum(1)
-		self.spinBox_target.setMaximum(9999)
-		self.spinBox_target.setObjectName("spinBox_target")
-		self.gridLayout.addWidget(self.spinBox_target, 0, 1, 1, 1)
-		self.radioButton_maxRolls = QtGui.QRadioButton(self.groupBox_extended)
-		self.radioButton_maxRolls.setObjectName("radioButton_maxRolls")
-		self.gridLayout.addWidget(self.radioButton_maxRolls, 1, 0, 1, 1)
-		self.spinBox_maxRolls = QtGui.QSpinBox(self.groupBox_extended)
-		self.spinBox_maxRolls.setEnabled(False)
-		self.spinBox_maxRolls.setMinimum(1)
-		self.spinBox_maxRolls.setMaximum(9999)
-		self.spinBox_maxRolls.setObjectName("spinBox_maxRolls")
-		self.gridLayout.addWidget(self.spinBox_maxRolls, 1, 1, 1, 1)
-		self.radioButton_target = QtGui.QRadioButton(self.groupBox_extended)
-		self.radioButton_target.setObjectName("radioButton_target")
-		self.gridLayout.addWidget(self.radioButton_target, 0, 0, 1, 1)
-		self.verticalLayout_3.addLayout(self.gridLayout)
-		spacerItem2 = QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-		self.verticalLayout_3.addItem(spacerItem2)
-		self.checkBox_rollsLimited = QtGui.QCheckBox(self.groupBox_extended)
-		self.checkBox_rollsLimited.setObjectName("checkBox_rollsLimited")
-		self.verticalLayout_3.addWidget(self.checkBox_rollsLimited)
-		self.horizontalLayout_4.addWidget(self.groupBox_extended)
-		self.verticalLayout_4.addLayout(self.horizontalLayout_4)
-		self.horizontalLayout = QtGui.QHBoxLayout()
-		self.horizontalLayout.setObjectName("horizontalLayout")
-		self.label_result = QtGui.QLabel(self.centralWidget)
-		self.label_result.setText("")
-		self.label_result.setPixmap(QtGui.QPixmap(":/actions/actions/fileclose.png"))
-		self.label_result.setObjectName("label_result")
-		self.horizontalLayout.addWidget(self.label_result)
-		self.label_resultText = QtGui.QLabel(self.centralWidget)
-		self.label_resultText.setObjectName("label_resultText")
-		self.horizontalLayout.addWidget(self.label_resultText)
-		spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-		self.horizontalLayout.addItem(spacerItem3)
-		self.label_successes = QtGui.QLabel(self.centralWidget)
-		self.label_successes.setObjectName("label_successes")
-		self.horizontalLayout.addWidget(self.label_successes)
-		self.label_successesNumber = QtGui.QLabel(self.centralWidget)
-		font = QtGui.QFont()
-		font.setPointSize(24)
-		self.label_successesNumber.setFont(font)
-		self.label_successesNumber.setObjectName("label_successesNumber")
-		self.horizontalLayout.addWidget(self.label_successesNumber)
-		self.verticalLayout_4.addLayout(self.horizontalLayout)
-		self.horizontalLayout_3 = QtGui.QHBoxLayout()
-		self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-		spacerItem4 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-		self.horizontalLayout_3.addItem(spacerItem4)
-		self.pushButton_quit = QtGui.QPushButton(self.centralWidget)
-		self.pushButton_quit.setObjectName("pushButton_quit")
-		self.horizontalLayout_3.addWidget(self.pushButton_quit)
-		self.verticalLayout_4.addLayout(self.horizontalLayout_3)
-		self.frame_dice = QtGui.QFrame(self.centralWidget)
-		self.frame_dice.setFrameShape(QtGui.QFrame.NoFrame)
-		self.frame_dice.setFrameShadow(QtGui.QFrame.Raised)
-		self.frame_dice.setObjectName("frame_dice")
-		self.horizontalLayout_dice = QtGui.QHBoxLayout(self.frame_dice)
-		self.horizontalLayout_dice.setObjectName("horizontalLayout_dice")
-		spacerItem5 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-		self.horizontalLayout_dice.addItem(spacerItem5)
-		self.gridLayout_dice = QtGui.QGridLayout()
-		self.gridLayout_dice.setObjectName("gridLayout_dice")
-		self.horizontalLayout_dice.addLayout(self.gridLayout_dice)
-		spacerItem6 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-		self.horizontalLayout_dice.addItem(spacerItem6)
-		self.verticalLayout_4.addWidget(self.frame_dice)
-		MainWindow.setCentralWidget(self.centralWidget)
-		self.statusBar = QtGui.QStatusBar(MainWindow)
-		self.statusBar.setObjectName("statusBar")
-		MainWindow.setStatusBar(self.statusBar)
-		self.menuBar = QtGui.QMenuBar(MainWindow)
-		self.menuBar.setGeometry(QtCore.QRect(0, 0, 471, 21))
-		self.menuBar.setObjectName("menuBar")
-		self.menu_File = QtGui.QMenu(self.menuBar)
-		self.menu_File.setObjectName("menu_File")
-		self.menuHelp = QtGui.QMenu(self.menuBar)
-		self.menuHelp.setObjectName("menuHelp")
-		self.menuExtras = QtGui.QMenu(self.menuBar)
-		self.menuExtras.setObjectName("menuExtras")
-		MainWindow.setMenuBar(self.menuBar)
-		self.action_quit = QtGui.QAction(MainWindow)
-		self.action_quit.setObjectName("action_quit")
-		self.action_about = QtGui.QAction(MainWindow)
-		self.action_about.setObjectName("action_about")
-		self.action_houserules = QtGui.QAction(MainWindow)
-		self.action_houserules.setCheckable(True)
-		self.action_houserules.setObjectName("action_houserules")
-		self.action_aboutQt = QtGui.QAction(MainWindow)
-		self.action_aboutQt.setObjectName("action_aboutQt")
-		self.menu_File.addAction(self.action_quit)
-		self.menuHelp.addAction(self.action_about)
-		self.menuHelp.addAction(self.action_aboutQt)
-		self.menuExtras.addAction(self.action_houserules)
-		self.menuBar.addAction(self.menu_File.menuAction())
-		self.menuBar.addAction(self.menuExtras.menuAction())
-		self.menuBar.addAction(self.menuHelp.menuAction())
-		self.label_diceNumber.setBuddy(self.spinBox_pool)
-		self.label.setBuddy(self.spinBox_modifier)
+DiceRoller-WoD is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation,  either version 3 of the License,  or
+(at your option) any later version.
 
-		self.retranslateUi(MainWindow)
-		QtCore.QObject.connect(self.action_quit, QtCore.SIGNAL("activated()"), MainWindow.close)
-		QtCore.QObject.connect(self.pushButton_quit, QtCore.SIGNAL("clicked()"), MainWindow.close)
-		QtCore.QObject.connect(self.radioButton_target, QtCore.SIGNAL("toggled(bool)"), self.spinBox_target.setEnabled)
-		QtCore.QObject.connect(self.radioButton_maxRolls, QtCore.SIGNAL("toggled(bool)"), self.spinBox_maxRolls.setEnabled)
-		QtCore.QMetaObject.connectSlotsByName(MainWindow)
-		MainWindow.setTabOrder(self.spinBox_pool, self.spinBox_modifier)
-		MainWindow.setTabOrder(self.spinBox_modifier, self.comboBox_xAgain)
-		MainWindow.setTabOrder(self.comboBox_xAgain, self.checkBox_rote)
-		MainWindow.setTabOrder(self.checkBox_rote, self.groupBox_extended)
-		MainWindow.setTabOrder(self.groupBox_extended, self.checkBox_rollsLimited)
+DiceRoller-WoD is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-	def retranslateUi(self, MainWindow):
-		MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "DiceRoller", None, QtGui.QApplication.UnicodeUTF8))
-		self.label_diceNumber.setText(QtGui.QApplication.translate("MainWindow", "&Dice", None, QtGui.QApplication.UnicodeUTF8))
-		self.spinBox_pool.setToolTip(QtGui.QApplication.translate("MainWindow", "The number of dice for this pool without any Modifiers.", None, QtGui.QApplication.UnicodeUTF8))
-		self.label.setText(QtGui.QApplication.translate("MainWindow", "&Modifier", None, QtGui.QApplication.UnicodeUTF8))
-		self.spinBox_modifier.setToolTip(QtGui.QApplication.translate("MainWindow", "The Modifiers for this roll.", None, QtGui.QApplication.UnicodeUTF8))
-		self.comboBox_xAgain.setToolTip(QtGui.QApplication.translate("MainWindow", "The reroll-property for this roll.", None, QtGui.QApplication.UnicodeUTF8))
-		self.comboBox_xAgain.setItemText(0, QtGui.QApplication.translate("MainWindow", "10 again", None, QtGui.QApplication.UnicodeUTF8))
-		self.comboBox_xAgain.setItemText(1, QtGui.QApplication.translate("MainWindow", "9 again", None, QtGui.QApplication.UnicodeUTF8))
-		self.comboBox_xAgain.setItemText(2, QtGui.QApplication.translate("MainWindow", "8 again", None, QtGui.QApplication.UnicodeUTF8))
-		self.comboBox_xAgain.setItemText(3, QtGui.QApplication.translate("MainWindow", "no reroll", None, QtGui.QApplication.UnicodeUTF8))
-		self.comboBox_xAgain.setItemText(4, QtGui.QApplication.translate("MainWindow", "subtract 1s", None, QtGui.QApplication.UnicodeUTF8))
-		self.checkBox_rote.setToolTip(QtGui.QApplication.translate("MainWindow", "Activate the Rote-ability (allowing you to reroll all unsuccessfule dice).", None, QtGui.QApplication.UnicodeUTF8))
-		self.checkBox_rote.setText(QtGui.QApplication.translate("MainWindow", "&Rote-property", None, QtGui.QApplication.UnicodeUTF8))
-		self.pushButton_roll.setToolTip(QtGui.QApplication.translate("MainWindow", "Press Button to roll the dice.", None, QtGui.QApplication.UnicodeUTF8))
-		self.pushButton_roll.setText(QtGui.QApplication.translate("MainWindow", "&Roll", None, QtGui.QApplication.UnicodeUTF8))
-		self.groupBox_extended.setToolTip(QtGui.QApplication.translate("MainWindow", "Rolls an Extended Roll, gathering successes over multiple rolls of the pool.", None, QtGui.QApplication.UnicodeUTF8))
-		self.groupBox_extended.setTitle(QtGui.QApplication.translate("MainWindow", "&Extdended roll", None, QtGui.QApplication.UnicodeUTF8))
-		self.spinBox_target.setToolTip(QtGui.QApplication.translate("MainWindow", "The target number for the extended roll.", None, QtGui.QApplication.UnicodeUTF8))
-		self.radioButton_maxRolls.setText(QtGui.QApplication.translate("MainWindow", "maximum Rolls", None, QtGui.QApplication.UnicodeUTF8))
-		self.spinBox_maxRolls.setToolTip(QtGui.QApplication.translate("MainWindow", "The target number for the extended roll.", None, QtGui.QApplication.UnicodeUTF8))
-		self.radioButton_target.setText(QtGui.QApplication.translate("MainWindow", "Target Number", None, QtGui.QApplication.UnicodeUTF8))
-		self.checkBox_rollsLimited.setToolTip(QtGui.QApplication.translate("MainWindow", "Limits the roll to only so many rolls as you have dice in the pool (not counting any modifiers, be they positive or negative).", None, QtGui.QApplication.UnicodeUTF8))
-		self.checkBox_rollsLimited.setText(QtGui.QApplication.translate("MainWindow", "Rolls &Limited", None, QtGui.QApplication.UnicodeUTF8))
-		self.label_resultText.setText(QtGui.QApplication.translate("MainWindow", "No Result", None, QtGui.QApplication.UnicodeUTF8))
-		self.label_successes.setText(QtGui.QApplication.translate("MainWindow", "Successes:", None, QtGui.QApplication.UnicodeUTF8))
-		self.label_successesNumber.setText(QtGui.QApplication.translate("MainWindow", "0", None, QtGui.QApplication.UnicodeUTF8))
-		self.pushButton_quit.setText(QtGui.QApplication.translate("MainWindow", "&Quit", None, QtGui.QApplication.UnicodeUTF8))
-		self.menu_File.setTitle(QtGui.QApplication.translate("MainWindow", "&File", None, QtGui.QApplication.UnicodeUTF8))
-		self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "&Help", None, QtGui.QApplication.UnicodeUTF8))
-		self.menuExtras.setTitle(QtGui.QApplication.translate("MainWindow", "E&xtras", None, QtGui.QApplication.UnicodeUTF8))
-		self.action_quit.setText(QtGui.QApplication.translate("MainWindow", "Quit", None, QtGui.QApplication.UnicodeUTF8))
-		self.action_quit.setToolTip(QtGui.QApplication.translate("MainWindow", "Quit the program.", None, QtGui.QApplication.UnicodeUTF8))
-		self.action_quit.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+Q", None, QtGui.QApplication.UnicodeUTF8))
-		self.action_about.setText(QtGui.QApplication.translate("MainWindow", "About...", None, QtGui.QApplication.UnicodeUTF8))
-		self.action_about.setToolTip(QtGui.QApplication.translate("MainWindow", "About DiceRoller-WoD.", None, QtGui.QApplication.UnicodeUTF8))
-		self.action_houserules.setText(QtGui.QApplication.translate("MainWindow", "&Houserules", None, QtGui.QApplication.UnicodeUTF8))
-		self.action_houserules.setToolTip(QtGui.QApplication.translate("MainWindow", "The houserule of the programmes group will be used: In Extended rolls, an exceptional success is achieved, whenever any roll during the process shows 5 successes or more.", None, QtGui.QApplication.UnicodeUTF8))
-		self.action_aboutQt.setText(QtGui.QApplication.translate("MainWindow", "About Qt...", None, QtGui.QApplication.UnicodeUTF8))
+You should have received a copy of the GNU General Public License
+along with DiceRoller-WoD.  If not,  see <http://www.gnu.org/licenses/>.
 
+@package DiceRoller-WoD
+"""
+
+
+
+
+import os
+import sys
+import time
+import gc
+
+from PySide.QtCore import *
+from PySide.QtGui import *
+from PySide.QtSvg import *
+# Hiermit kann ich weiterhin ich die Syntax der Signale und Slots so belassen, wie sie in PyQt vorgeschrieben ist.
+from PySide.QtCore import Signal as pyqtSignal
+from PySide.QtCore import Slot as pyqtSlot
+
+from src.Settings import Settings
+import src.Error as Error
+from src.FuncName import *
+from src.Random import Random
+from src.Dice import DieResult
+from src.DicePool import InstantRoll, ExtendedRoll
+from src.RollingDieWidget import RollingDiesWidget
+
+from ui.ui_MainWindow import Ui_MainWindow
+import resources.resource_rc as resource_rc
+
+
+
+
+PROGRAM_NAME = "DiceRoller WoD"
+PROGRAM_VERSION_MAJOR = 0
+PROGRAM_VERSION_MINOR = 2
+PROGRAM_VERSION_CHANGE = 2
+PROGRAM_DESCRIPTION = "A dice roller for the W10-System (World of Darkness)"
+
+PROGRAM_LANGUAGE_PATH = "lang"
+
+CONFIG_FILE = "config.cfg"
+
+DICEROLL_TIMER_INTERVAL = 50
+DICEROLL_TIMER_DELAY = 500
+
+SIDES_DIE = 10
+MAX_DICE_IN_DISPLAY = 10
+
+
+
+
+def getPath():
+	"""
+	Get the path to this script no matter how it's run.
+	"""
+
+	#Determine if the application is a py/pyw or a frozen exe.
+	if hasattr(sys,  'frozen'):
+		# If run from exe
+		dir_path = os.path.dirname(sys.executable)
+	elif '__file__' in locals():
+		# If run from py
+		dir_path = os.path.dirname(__file__)
+	else:
+		# If run from command line
+		dir_path = sys.path[0]
+	return dir_path
+
+
+
+
+class MainWindow(QMainWindow):
+	"""
+	Die Hauptklasse des Programms.
+
+	In dieser Klasse wird die GUI gesteuert und die Würfelwürfe aufgerufen.
+	"""
+
+	dicePoolChanged = pyqtSignal(int)
+	xAgainChanged = pyqtSignal(int)
+	cursed = pyqtSignal(bool)
+
+
+	def __init__(self,  parent=None):
+		"""
+		Konstruktor
+		"""
+
+		#gc.enable()
+
+		self.translator_app = QTranslator()
+		self.translator_qt = QTranslator()
+
+		QApplication.installTranslator( self.translator_app )
+		QApplication.installTranslator( self.translator_qt )
+
+		QMainWindow.__init__(self,  parent)
+
+		QCoreApplication.setOrganizationName("Caern")
+		QCoreApplication.setOrganizationDomain("www.caern.de")
+		QCoreApplication.setApplicationName("DiceRoller WoD")
+		QCoreApplication.setApplicationVersion(str(PROGRAM_VERSION_MAJOR) +
+			"." +
+			str(PROGRAM_VERSION_MINOR) +
+			"." +
+			str(PROGRAM_VERSION_CHANGE)
+		)
+		QApplication.setWindowIcon(QIcon(":/icons/logo/WoD.png"))
+
+		self.ui = Ui_MainWindow()
+		self.ui.setupUi(self)
+
+		self.createInfo()
+
+		self.instantRoll = InstantRoll()
+		self.extendedRoll = ExtendedRoll()
+
+		# Dieser Zähler bestimmt, wie der rollende Würfel angezeigt wird.
+		self.timerDice = QTimer()
+		# Verzögert die tatsächliche Ausführung des Würfelwurfs.
+		self.timerRoll = QTimer()
+
+		self.populateUi()
+		self.createLanguageMenu()
+		self.createConnections()
+		self.initializing()
+
+		self.setWindowTitle(QCoreApplication.applicationName())
+
+		self.retranslateUi()
+
+		## Die von der letzten Benutzung gespeicherte Größe und Position auf dem Bildschirm laden.
+		#self.readSettings()
+
+
+	#def closeEvent(self, event):
+		#"""
+		#Diese Funktion wird aufgerufen, wann immer das Programm geschlossen wird.
+		#Die Idee dahinter ist, vor dem Beenden, Größe und Position des Fensters zu speichern.
+		#"""
+		#self.writeSettings()
+		#event.accept()
+
+
+	def createInfo(self):
+		"""
+		Erzeugt Tooltips und Hilfe für die einzelnen Teile des Programms.
+		"""
+
+		self.ui.action_houserules.setStatusTip(self.ui.action_houserules.toolTip())
+
+
+	def createLanguageMenu(self):
+		"""
+		Erzeugt das Menü zum Umschalten zwischen den möglichen Sprachen.
+		"""
+
+		self.menu_language = QMenu( self.tr("&Language") )
+		self.actionGroup_language = QActionGroup(self)
+
+		self.langPath = getPath() + "/" + PROGRAM_LANGUAGE_PATH
+		self.dir_qm = QDir( self.langPath );
+		self.fileNames = self.dir_qm.entryList( ["DiceRoller-WoD_*.qm"]);
+
+		# Englisch hat keine qm-Datei,  also muß es von Hand hinzugefügt werden.
+		self.action = QAction( "&1 English",  self.actionGroup_language )
+		self.action.setCheckable( True )
+		self.action.setData( "en" )
+		self.action.setChecked( True )
+
+		self.menu_language.addAction( self.action )
+		self.actionGroup_language.addAction( self.action )
+
+		iter = 0
+		for i in self.fileNames:
+			self.trFilename = unicode(i)
+			self.locale = unicode(i)
+			self.locale = self.locale[(self.locale.find( "_" )+1):(self.locale.find( "." ))]
+
+			self.translator = QTranslator()
+			self.translator.load( self.trFilename,  self.dir_qm.absolutePath() )
+			self.language = self.translator.translate( "MainWindow",  "English" )
+
+			self.action = QAction( "&" + str(iter + 2) + " " + self.language,  self.actionGroup_language )
+			self.action.setCheckable( True )
+			self.action.setData( self.locale )
+
+			self.menu_language.addAction ( self.action )
+			self.actionGroup_language.addAction ( self.action )
+
+			iter += 1
+
+		self.actionGroup_language.triggered.connect(self.switchLanguage)
+
+		self.ui.menuBar.insertMenu(self.ui.menuHelp.menuAction(),  self.menu_language)
+
+
+	def switchLanguage( self,  action ):
+		"""
+		Schaltet zwischen den einzelnen Sprachen um.
+		"""
+
+		self.locale = str(action.data())
+		self.qmPath = getPath() + "/" + PROGRAM_LANGUAGE_PATH
+
+		if self.translator_app.load( "DiceRoller-WoD_" + self.locale,  self.qmPath ):
+			qDebug("Hat DiceRoller-WoD_" + self.locale + " geladen.")
+
+		if self.translator_qt.load( "qt_" + self.locale,  QLibraryInfo.location ( QLibraryInfo.TranslationsPath ) ):
+			qDebug("Hat qt_" + self.locale + " geladen.")
+
+		# Alle Texte neu setzen
+		self.retranslateUi()
+		# Seltsamerweise ist retranslate in Ui_MainWindow leer. Ich weiß nicht,  wieso das der Fall ist.
+		self.ui.retranslateUi(self)
+
+
+	def retranslateUi(self):
+		"""
+		Diese Funktion übersetzt alle Texte, welche nicht in der .ui-Datei festgelegt sind, sondern im Quellcode (hier) geschrieben wurden.
+		"""
+
+		self.menu_language.setTitle( self.tr( "&Language" ) )
+		self.reset()
+
+
+	def populateUi(self):
+		self.rollingDies = RollingDiesWidget(29, 10)
+		self.ui.horizontalLayout_dice.insertWidget(1, self.rollingDies)
+
+		#self.rollingDie = RollingDieWidget(10, 1)
+		#self.ui.gridLayout_dice.addWidget(self.rollingDie)
+		##self.rollingDie.resize(100,100)
+
+		#for i in xrange(6):
+			#self.rollingDie_x = RollingDieWidget(10, i+1)
+			#self.ui.horizontalLayout_dice.insertWidget(2, self.rollingDie_x)
+			#self.rollingDie_x.setFace(Random.random(1,6))
+		pass
+
+
+	def createConnections(self):
+		"""
+		Erstelle die Verbindungen zwischen den verschiedenen Klassen und Elementen des Programms.
+		"""
+
+		self.ui.action_about.triggered.connect(self.aboutApp)
+		self.ui.action_aboutQt.triggered.connect(QApplication.aboutQt)
+		self.ui.action_houserules.toggled.connect(self.setHouserules)
+		self.ui.pushButton_roll.clicked.connect(self.roll)
+		self.ui.spinBox_pool.valueChanged[int].connect(self.calcDicePool)
+		self.ui.spinBox_pool.valueChanged.connect(self.reset)
+		self.ui.spinBox_modifier.valueChanged[int].connect(self.calcDicePoolMod)
+		self.ui.spinBox_modifier.valueChanged.connect(self.reset)
+		self.ui.checkBox_rote.toggled.connect(self.instantRoll.setRote)
+		self.ui.checkBox_rote.toggled.connect(self.extendedRoll.setRote)
+		self.ui.checkBox_rote.toggled.connect(self.reset)
+		self.ui.comboBox_xAgain.activated[int].connect(self.setXAgainThreshold)
+		self.ui.comboBox_xAgain.activated.connect(self.reset)
+		self.ui.groupBox_extended.toggled.connect(self.changeText)
+		self.ui.radioButton_target.toggled.connect(self.changeText)
+		self.ui.radioButton_maxRolls.toggled.connect(self.changeText)
+		self.ui.groupBox_extended.toggled.connect(self.reset)
+		self.ui.radioButton_target.toggled.connect(self.setExtendedMode)
+		self.ui.spinBox_target.valueChanged[int].connect(self.extendedRoll.setTarget)
+		self.ui.spinBox_target.valueChanged.connect(self.reset)
+		self.ui.spinBox_maxRolls.valueChanged[int].connect(self.extendedRoll.setMaxRolls)
+		self.ui.spinBox_maxRolls.valueChanged.connect(self.reset)
+		self.ui.checkBox_rollsLimited.toggled.connect(self.extendedRoll.setLimited)
+		self.ui.checkBox_rollsLimited.toggled.connect(self.reset)
+		self.xAgainChanged.connect(self.instantRoll.setThreshold)
+		self.xAgainChanged.connect(self.extendedRoll.setThreshold)
+		self.cursed.connect(self.instantRoll.setCurse)
+		self.cursed.connect(self.extendedRoll.setCurse)
+		self.instantRoll.rolled.connect(self.setResultSuccesses)
+		self.extendedRoll.rolled.connect(self.setResultSuccesses)
+		self.extendedRoll.rollsNeeded.connect(self.setResultRolls)
+		self.instantRoll.rollFinished.connect(self.setResult)
+		self.extendedRoll.rollFinished.connect(self.setResult)
+
+		self.dicePoolChanged.connect(self.changeDiceDisplay)
+
+		self.timerDice.timeout.connect(self.displayDice)
+		self.timerRoll.timeout.connect(self._executeRoll)
+
+
+	def initializing(self):
+		"""
+		Initialisiert das Programm mit den Startwerten.
+		"""
+
+		self.ui.action_quit.setIcon(QIcon(":/icons/actions/exit.png"))
+		self.ui.action_about.setIcon(QIcon(":/icons/logo/WoD.png"))
+		self.ui.pushButton_quit.setIcon(self.ui.action_quit.icon())
+		self.ui.pushButton_roll.setIcon(QIcon(":icons/W10_10.svg"))
+
+		self.ui.action_quit.setMenuRole(QAction.QuitRole)
+		self.ui.action_about.setText(self.tr(str("About %(appName)s..." % {"appName": QApplication.applicationName()})))
+		self.ui.action_about.setMenuRole(QAction.AboutRole)
+
+		self.ui.spinBox_pool.setValue(2)
+		self.ui.checkBox_rote.setChecked(False)
+		self.ui.comboBox_xAgain.setCurrentIndex(0)
+		self.ui.spinBox_target.setValue(1)
+		self.changeText()
+		self.ui.radioButton_target.setChecked(True)
+		self.ui.groupBox_extended.setChecked(False)
+		self.ui.checkBox_rollsLimited.setChecked(True)
+
+
+	def displayDice(self, value=None):
+		"""
+		@todo Der Würfel kann mehrmals in Folge das selbe Ergebnis anzeigen, was dazu führt, daß der Bildablauf zu stocken scheint.
+		"""
+
+		if (value == None):
+			dieValue = Random.random(1, 10)
+			#print(dieValue)
+		else:
+			dieValue = value
+
+		try:
+			#self.rollingDie.setFace(dieValue)
+			pass
+		except Error.ErrValue as e:
+			print(e.msg)
+		#self.rollingDie.resize(self.rollingDie.sizeHint())
+
+
+	def changeDiceDisplay(self, number):
+		"""
+		Diese Funktion bestimmt, wieviele Würfel angezeigt werden.
+		"""
+
+		#self.diceNumber = number
+		#if number < 1:
+			#self.diceNumber = 1
+
+		## Aus mir unerfindlichen Gründen steigt Python bei dieser Schleife mit einem SegFault aus. Allerdings immer nach einer unterschiedlichen Anzahl von Klicks auf die Würfelanzahl.
+		##while self.ui.horizontalLayout_dice.count() > 2:
+			##widget = self.ui.horizontalLayout_dice.itemAt(1).widget()
+			##self.ui.horizontalLayout_dice.removeWidget(widget)
+			##widget.setParent(None)
+			##del widget
+
+		#print(self.ui.gridLayout_dice.rowCount(), self.ui.gridLayout_dice.columnCount())
+		#print(type(self.ui.gridLayout_dice.itemAtPosition(0, 0)))
+
+		## Exception bei dem Klicken auf 0 Würfel. Da gibt es Probleme
+		#if (self.ui.gridLayout_dice.rowCount() > 0 and self.ui.gridLayout_dice.columnCount() > 0):
+			#rows = range(self.ui.gridLayout_dice.rowCount())
+			#columns = range(self.ui.gridLayout_dice.columnCount())
+			#print(rows,columns)
+			#for i in rows[::-1]:
+				#print("Test")
+				#for j in columns[::-1]:
+					#print("working in cell %(row)i, %(column)i" % {"row": i, "column": j })
+					#print(type(self.ui.gridLayout_dice.itemAtPosition(i, j)))
+					#widget = self.ui.gridLayout_dice.itemAtPosition(i, j).widget()
+					#self.ui.gridLayout_dice.removeWidget(widget)
+					#widget.setParent(None)
+					##del widget
+
+		#numOfDice = 0
+		#i = 0
+		#while numOfDice < self.diceNumber:
+			#for j in xrange(MAX_DICE_IN_ROW):
+				#self.__rollingDie = RollingDieWidget(SIDES_DIE)
+				#self.ui.gridLayout_dice.addWidget(self.__rollingDie, i, j)
+				#numOfDice += 1
+
+				#if numOfDice >= self.diceNumber:
+					#break
+
+			#i += 1
+
+
+		self.rollingDies.setNumber(number)
+		pass
+
+
+	def aboutApp(self):
+		"""
+		Zeigt die Info-Nachricht an.
+		"""
+
+		self.appText = self.tr("""
+			<h1>%1</h1>
+			<h2>Version: %2</h2>
+			<p>Copyright (C) 2011 by Victor von Rhein<br>
+			EMail: victor@caern.de</p>
+		""").arg(QCoreApplication.applicationName()).arg(QCoreApplication.applicationVersion())
+		self.gnuText = self.tr("""
+			<h2>GNU General Public License</h2>
+			<p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation,  either version 3 of the License,  or (at your option) any later version.</p>
+			<p>This program is distributed in the hope that it will be useful,  but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p>
+			<p>You should have received a copy of the GNU General Public License along with this program.  If not,  see <a>http://www.gnu.org/licenses/</a>.</p>
+		""")
+		self.wodText = self.tr("""
+			<h2>%1</h2>
+			<p>%1,  %2,  the %3 and all referring terms and symbols are copyrighted by %4</p>
+		""").arg("World of Darkness").arg("White Wolf").arg("White Wolf-Logo").arg("White Wolf Inc.")
+		self.aboutText = self.appText + self.gnuText + self.wodText
+		QMessageBox.about(self,  "About " + QCoreApplication.applicationName(),  self.aboutText )
+
+
+	def roll(self):
+		"""
+		Der Wurf wird durchgeführt. Der tatsächliche Wurf wird aber von den Timern angestoßen.
+		"""
+
+		# Es wird ein rollender Würfel angezeigt.
+		self.timerDice.start(DICEROLL_TIMER_INTERVAL)
+		self.timerRoll.start(DICEROLL_TIMER_DELAY)
+
+
+	def _executeRoll(self):
+		"""
+		Entscheidet vor dem eigentlichen Würfelwurf, ob ein normaler oder ein erweiterter Wurf notwendig ist und führt diesen aus.
+		"""
+
+		if self.ui.groupBox_extended.isChecked():
+			#qDebug("Checked")
+			self.extendedRoll.roll()
+		else:
+			#qDebug("Not Checked")
+			self.instantRoll.roll()
+
+		# Die Anzeige des rollenden Würfels wird angehalten
+		self.timerDice.stop()
+		self.timerRoll.stop()
+
+
+	def calcDicePool(self, value):
+		"""
+		Berechnet die Größe des zur Verfügung stehenden Würfelpools, welcher von den Würfeln und den Modifikatoren abhängt.
+		"""
+
+		self.instantRoll.poolSize = value + self.ui.spinBox_modifier.value()
+		self.extendedRoll.poolSize = self.instantRoll.poolSize
+		self.extendedRoll.limit = value
+
+		self.dicePoolChanged.emit(self.instantRoll.poolSize)
+
+
+	def calcDicePoolMod(self, value):
+		"""
+		Berechnet wie schon calcDicePool() die Größe des Würfelvorrats, allerdings werden dieser Funktion andere Argumente übergeben.
+		"""
+
+		self.instantRoll.poolSize = value + self.ui.spinBox_pool.value()
+		self.extendedRoll.poolSize = self.instantRoll.poolSize
+
+		self.dicePoolChanged.emit(self.instantRoll.poolSize)
+
+
+	def setHouserules(self, value):
+		#qDebug("Test" + str(value))
+		self.extendedRoll.isHouserules = value
+
+
+	def setXAgainThreshold(self, value):
+		"""
+		Legt fest, bei welchem Ergebnis weitergewürfelt werden kann und wann dies überhaupt nicht der Fall sein sollte oder gar Erfolge abgezogen werden können.
+		"""
+
+		self.__threshold = 0
+		if (value < 3):
+			self.__threshold = 10 - value	# Index 0 entspricht 10 again, 1 entspricht 9 again etc.
+		else:
+			self.__threshold = 11	# Index 3 entspricht "no reroll"
+
+		self.xAgainChanged.emit(self.__threshold)
+
+		if (value > 3):
+			self.cursed.emit(True)	# Kein reroll und 1er werden Abgezogen.
+		else:
+			self.cursed.emit(False)	# 1er werden nicht abgezogen.
+
+
+	def setExtendedMode(self, sw):
+		"""
+		Legt den Modus fest, mit welchem der erweiterte Wurf durchgeführt wird. Entweder wird auf ein Ergebnishingewürfelt, oder nach einer bestimmten Anzahl würde die Anzahl der Erfolge gezählt.
+		"""
+
+		if (sw):
+			self.extendedRoll.isResultInRolls = False
+		else:
+			self.extendedRoll.isResultInRolls = True
+
+
+	def setResult(self, value):
+		"""
+		Schreibt das Ergebnis des Wurfs in die GUI. Dabei wird auch je nach Erfolgsqualität bei dem dargestellten Würfel eine andere Augenzahl gezeigt.
+		"""
+
+		self.ui.statusBar.showMessage(self.tr("Result of diceroll is displayed."))
+
+		if (value == DieResult.dramaticFailure):
+			self.ui.label_resultText.setText(self.tr(str("Dramatic Failure")))
+			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/cnrdelete-all1.png"))
+			self.displayDice(1)
+		elif (value == DieResult.failure):
+			self.ui.label_resultText.setText(self.tr(str("Failure")))
+			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/fileclose.png"))
+			self.displayDice(Random.random(2, 7))
+		elif (value == DieResult.success):
+			self.ui.label_resultText.setText(self.tr(str("Success")))
+			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/ok.png"))
+			self.displayDice(Random.random(8, 9))
+		else:
+			self.ui.label_resultText.setText(self.tr(str("Exceptional Success")))
+			self.ui.label_result.setPixmap(QPixmap(":/icons/actions/bookmark.png"))
+			self.displayDice(0)
+
+
+	def setResultRolls(self, value):
+		"""
+		Zeigt in der GUI an, wieviele Würfe nötig waren.
+		"""
+
+		if (self.ui.groupBox_extended.isChecked() and self.ui.radioButton_target.isChecked()):
+			self.ui.label_successesNumber.setText(str(value))
+
+
+	def setResultSuccesses(self, value):
+		"""
+		Zeigt in der GUI an, wieviele Erfolge erzielt wurden.
+		"""
+
+		if (not self.ui.groupBox_extended.isChecked() or not self.ui.radioButton_target.isChecked()):
+			self.ui.label_successesNumber.setText(str(value))
+
+
+	def changeText(self):
+		"""
+		Verändert den Text in der Statuszeile.
+		"""
+
+		if (self.ui.groupBox_extended.isChecked() and self.ui.radioButton_target.isChecked()):
+			self.ui.label_successes.setText(self.tr("Number of rolls needed:"))
+		else:
+			self.ui.label_successes.setText(self.tr("Number of successes:"))
+
+
+	def reset(self):
+		"""
+		Setzt das Programm auf einen definierten Startwert zurück.
+		"""
+
+		self.ui.label_result.setPixmap(QPixmap(":/icons/actions/fileclose.png"))
+		self.ui.label_resultText.setText(self.tr("No result yet!"))
+		self.ui.label_successesNumber.setText(str(0))
+		self.ui.statusBar.showMessage(self.tr("Press the Button to roll the dice!"))
+
+
+	#def writeSettings(self):
+		#"""
+		#Speichert Größe und Position des Fensters in der Konfigurationsdatei.
+		#"""
+
+		#settings = Settings( getPath() + "/" + CONFIG_FILE )
+
+		#settings.beginGroup( "MainWindow" )
+		#settings.setValue( "size", self.size() )
+		#settings.setValue( "pos", self.pos() )
+		#settings.setValue( "state", self.saveState() )
+		#settings.endGroup()
+
+
+	#def readSettings(self):
+		#"""
+		#Liest Größe und Position des Fensters aus der Konfigurationsdatei.
+		#"""
+
+		#settings = Settings( getPath() + "/" + CONFIG_FILE )
+
+		#settings.beginGroup( "MainWindow" )
+		#self.resize( settings.value( "size", QSize( 460, 270 ) ).toSize() )
+		#self.move( settings.value( "pos", QPoint( 0, 0 ) ).toPoint() )
+		#self.restoreState( settings.value( "state" ).toByteArray() )
+		#settings.endGroup()
