@@ -29,9 +29,9 @@ from PySide.QtCore import *
 from PySide.QtGui import *
 from PySide.QtSvg import *
 
-import Error
-from Random import Random
-from FuncName import *
+import src.Error as Error
+from src.Random import Random
+from src.FuncName import *
 
 
 
@@ -111,7 +111,7 @@ class DieWidget(QLabel):
 
 		# Es wird die absolute Augenazhl angegeben, aber die tatsächliche Indexposition dieser Würfelseite ist um 1 Stelle kleiner.
 		self.setPixmap(self.__dieSides[face-1])
-		#print self.__class__, funcName(), self.__dieSides[face-1]
+		#print(self.__class__, funcName(), self.__dieSides[face-1])
 
 
 
@@ -165,7 +165,7 @@ class DiesWidget(QWidget):
 			self.__poolSize = numOfDies
 
 		## Es wird nur gelöscht, was gelöscht werden muß. Danach muß nur der fehlende Rest aufgefüllt werden.
-		##print self.__layout.count()
+		##print(self.__layout.count())
 		#if self.__layout.count() > self.__poolSize:
 			#rows = range(self.__layout.rowCount())
 			#columns = range(self.__layout.columnCount())
@@ -174,11 +174,12 @@ class DiesWidget(QWidget):
 				#breakLoop = False
 
 				#for j in columns[::-1]:
-					##print "Index %(row)i, %(column)i" \
+					##print("Index %(row)i, %(column)i" \
 						##% {
 							##"row": i,
 							##"column": j,
 						##}
+					##)
 
 					#widget = self.__layout.itemAtPosition(i, j)
 					## Wenn die letzte Zeile des GridLayouts nicht gefüllt ist, marschiert diese verschlachtelte Schleife dennoch über jede einzelne Zelle. Aus leeren Zellen soll natürlich nichts entfernt und gelöscht werden.
@@ -204,11 +205,12 @@ class DiesWidget(QWidget):
 		self.__indexOfRow = self.__diceShown / MAX_DICE_IN_ROW
 		self.__indexOfColumn = self.__diceShown % MAX_DICE_IN_ROW
 
-		#print "Index %(row)i, %(column)i" \
+		#print("Index %(row)i, %(column)i" \
 			#% {
 				#"row": self.__indexOfRow,
 				#"column": self.__indexOfColumn,
 			#}
+		#)
 
 		while self.__diceShown < self.__poolSize:
 			self.__dieWidget = DieWidget(self.__die, 1)

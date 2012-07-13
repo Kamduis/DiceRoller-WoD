@@ -30,8 +30,8 @@ from PySide.QtCore import *
 from PySide.QtCore import Signal as pyqtSignal
 from PySide.QtCore import Slot as pyqtSlot
 
-from Error import ErrValue
-from Random import Random
+from src.Error import ErrValue
+from src.Random import Random
 
 
 

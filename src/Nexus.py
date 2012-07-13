@@ -23,6 +23,11 @@ along with DiceRoller-WoD.  If not,  see <http://www.gnu.org/licenses/>.
 """
 
 
+
+
+from __future__ import print_function
+
+
 import os
 import sys
 import time
@@ -35,16 +40,16 @@ from PySide.QtSvg import *
 from PySide.QtCore import Signal as pyqtSignal
 from PySide.QtCore import Slot as pyqtSlot
 
-from MainWindow import Ui_MainWindow
-from Settings import Settings
-import Error
-from FuncName import *
-from Random import Random
-from Dice import DieResult
-from DicePool import InstantRoll, ExtendedRoll
-from RollingDieWidget import RollingDiesWidget
+from ui.MainWindow import Ui_MainWindow
+from src.Settings import Settings
+import src.Error as Error
+from src.FuncName import *
+from src.Random import Random
+from src.Dice import DieResult
+from src.DicePool import InstantRoll, ExtendedRoll
+from src.RollingDieWidget import RollingDiesWidget
 
-from resources import resource_rc
+import resources.resource_rc as resource_rc
 
 
 
@@ -334,15 +339,15 @@ class Nexus(QMainWindow):
 
 		if (value == None):
 			dieValue = Random.random(1, 10)
-			#print dieValue
+			#print(dieValue)
 		else:
 			dieValue = value
 
 		try:
 			#self.rollingDie.setFace(dieValue)
 			pass
-		except Error.ErrValue, e:
-			print e.msg
+		except Error.ErrValue as e:
+			print(e.msg)
 		#self.rollingDie.resize(self.rollingDie.sizeHint())
 
 
@@ -362,19 +367,19 @@ class Nexus(QMainWindow):
 			##widget.setParent(None)
 			##del widget
 
-		#print self.ui.gridLayout_dice.rowCount(), self.ui.gridLayout_dice.columnCount()
-		#print type(self.ui.gridLayout_dice.itemAtPosition(0, 0))
+		#print(self.ui.gridLayout_dice.rowCount(), self.ui.gridLayout_dice.columnCount())
+		#print(type(self.ui.gridLayout_dice.itemAtPosition(0, 0)))
 
 		## Exception bei dem Klicken auf 0 Würfel. Da gibt es Probleme
 		#if (self.ui.gridLayout_dice.rowCount() > 0 and self.ui.gridLayout_dice.columnCount() > 0):
 			#rows = range(self.ui.gridLayout_dice.rowCount())
 			#columns = range(self.ui.gridLayout_dice.columnCount())
-			#print rows,columns
+			#print(rows,columns)
 			#for i in rows[::-1]:
-				#print "Test"
+				#print("Test")
 				#for j in columns[::-1]:
-					#print "working in cell %(row)i, %(column)i" % {"row": i, "column": j }
-					#print type(self.ui.gridLayout_dice.itemAtPosition(i, j))
+					#print("working in cell %(row)i, %(column)i" % {"row": i, "column": j })
+					#print(type(self.ui.gridLayout_dice.itemAtPosition(i, j)))
 					#widget = self.ui.gridLayout_dice.itemAtPosition(i, j).widget()
 					#self.ui.gridLayout_dice.removeWidget(widget)
 					#widget.setParent(None)
