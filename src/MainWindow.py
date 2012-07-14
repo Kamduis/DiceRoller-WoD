@@ -333,6 +333,9 @@ class MainWindow(QMainWindow):
 		self.ui.groupBox_extended.setChecked(False)
 		self.ui.checkBox_rollsLimited.setChecked(True)
 
+		self.calcDicePool(self.ui.spinBox_pool.value())
+		self.calcDicePoolMod(self.ui.spinBox_modifier.value())
+
 
 	def displayDice(self, value=None):
 		"""
