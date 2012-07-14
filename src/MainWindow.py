@@ -321,7 +321,7 @@ class MainWindow(QMainWindow):
 		self.ui.pushButton_roll.setIcon(QIcon(":icons/W10_10.svg"))
 
 		self.ui.action_quit.setMenuRole(QAction.QuitRole)
-		self.ui.action_about.setText(self.tr(str("About %(appName)s..." % {"appName": QApplication.applicationName()})))
+		self.ui.action_about.setText(self.tr(str("About {appName}...".format(appName=QApplication.applicationName()))))
 		self.ui.action_about.setMenuRole(QAction.AboutRole)
 
 		self.ui.spinBox_pool.setValue(2)

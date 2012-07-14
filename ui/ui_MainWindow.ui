@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>451</width>
-    <height>268</height>
+    <width>496</width>
+    <height>290</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -114,7 +114,7 @@
             <item>
              <widget class="QCheckBox" name="checkBox_rote">
               <property name="toolTip">
-               <string>Activate the Rote-ability (allowing you to reroll all unsuccessfule dice).</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Activate the Rote-ability (allowing you to reroll all unsuccessfull dice once).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="text">
                <string>&amp;Rote-property</string>
@@ -162,6 +162,9 @@
           </item>
           <item>
            <widget class="QLabel" name="label_dice_total">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The total number of dice rolled, modifiers included.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="text">
              <string>TextLabel</string>
             </property>
@@ -230,6 +233,9 @@
            </item>
            <item row="1" column="0">
             <widget class="QRadioButton" name="radioButton_maxRolls">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Make an extended roll with a given number of individual rolls and display the total amount of successes achieved.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="text">
               <string>maximum Rolls</string>
              </property>
@@ -241,7 +247,7 @@
               <bool>false</bool>
              </property>
              <property name="toolTip">
-              <string>The target number for the extended roll.</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of rolls to do.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="minimum">
               <number>1</number>
@@ -253,6 +259,9 @@
            </item>
            <item row="0" column="0">
             <widget class="QRadioButton" name="radioButton_target">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Make an extended roll with the goal to achieve a specified number of successes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="text">
               <string>Target Number</string>
              </property>
@@ -276,7 +285,10 @@
          <item>
           <widget class="QCheckBox" name="checkBox_rollsLimited">
            <property name="toolTip">
-            <string>Limits the roll to only so many rolls as you have dice in the pool (not counting any modifiers, be they positive or negative).</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Limit the total number of rolles to the number of dice available (Modifiers don't influence the number of rolls).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Limits the roll to only so many rolls as you have dice in the pool (not counting any modifiers, be they positive or negative).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>Rolls &amp;Limited</string>
@@ -334,6 +346,9 @@
           <pointsize>24</pointsize>
          </font>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Either the number of successes or the number of rolls necessary, to achieve the required number of successes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>0</string>
         </property>
@@ -358,6 +373,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_quit">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Quits the program.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>&amp;Quit</string>
         </property>
@@ -373,7 +391,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>451</width>
+     <width>496</width>
      <height>25</height>
     </rect>
    </property>
