@@ -43,7 +43,7 @@ from src.FuncName import *
 from src.Random import Random
 from src.Dice import DieResult
 from src.DicePool import InstantRoll, ExtendedRoll
-from src.RollingDieWidget import RollingDiesWidget
+#from src.RollingDieWidget import RollingDiesWidget
 
 from ui.ui_MainWindow import Ui_MainWindow
 import resources.resource_rc as resource_rc
