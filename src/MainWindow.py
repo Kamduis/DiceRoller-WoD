@@ -43,7 +43,7 @@ from src.FuncName import *
 from src.Random import Random
 from src.Dice import DieResult
 from src.DicePool import InstantRoll, ExtendedRoll
-from src.RollingDieWidget import RollingDiesWidget
+#from src.RollingDieWidget import RollingDiesWidget
 
 from ui.ui_MainWindow import Ui_MainWindow
 import resources.resource_rc as resource_rc
@@ -53,8 +53,8 @@ import resources.resource_rc as resource_rc
 
 PROGRAM_NAME = "DiceRoller WoD"
 PROGRAM_VERSION_MAJOR = 0
-PROGRAM_VERSION_MINOR = 2
-PROGRAM_VERSION_CHANGE = 2
+PROGRAM_VERSION_MINOR = 3
+PROGRAM_VERSION_CHANGE = 0
 PROGRAM_DESCRIPTION = "A dice roller for the W10-System (World of Darkness)"
 
 PROGRAM_LANGUAGE_PATH = "lang"
