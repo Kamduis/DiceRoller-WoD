@@ -411,22 +411,36 @@ class MainWindow(QMainWindow):
 		Zeigt die Info-Nachricht an.
 		"""
 
-		self.appText = self.tr("""
-			<h1>%1</h1>
-			<h2>Version: %2</h2>
-			<p>Copyright (C) 2011 by Victor von Rhein<br>
-			EMail: victor@caern.de</p>
-		""").arg(QCoreApplication.applicationName()).arg(QCoreApplication.applicationVersion())
-		self.gnuText = self.tr("""
-			<h2>GNU General Public License</h2>
-			<p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation,  either version 3 of the License,  or (at your option) any later version.</p>
-			<p>This program is distributed in the hope that it will be useful,  but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p>
-			<p>You should have received a copy of the GNU General Public License along with this program.  If not,  see <a>http://www.gnu.org/licenses/</a>.</p>
-		""")
-		self.wodText = self.tr("""
-			<h2>%1</h2>
-			<p>%1,  %2,  the %3 and all referring terms and symbols are copyrighted by %4</p>
-		""").arg("World of Darkness").arg("White Wolf").arg("White Wolf-Logo").arg("White Wolf Inc.")
+		self.appText = self.tr(
+			"""
+				<h1>{app_name}</h1>
+				<h2>Version: {app_version}</h2>
+				<p>Copyright (C) 2011 by Victor von Rhein<br>
+				EMail: victor@caern.de</p>
+			""".format(
+				app_name=QCoreApplication.applicationName(),
+				app_version=QCoreApplication.applicationVersion()
+			)
+		)
+		self.gnuText = self.tr(
+			"""
+				<h2>GNU General Public License</h2>
+				<p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation,  either version 3 of the License,  or (at your option) any later version.</p>
+				<p>This program is distributed in the hope that it will be useful,  but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p>
+				<p>You should have received a copy of the GNU General Public License along with this program.  If not,  see <a>http://www.gnu.org/licenses/</a>.</p>
+			"""
+		)
+		self.wodText = self.tr(
+			"""
+				<h2>{name}</h2>
+				<p>{name}, {white_wolf}, the {logo} and all referring terms and symbols are copyrighted by {white_wolf_inc}</p>
+			""".format(
+				name="World of Darkness",
+				white_wolf="White Wolf",
+				white_wolf_inc="White Wolf Inc.",
+				logo="White Wolf-Logo"
+			)
+		)
 		self.aboutText = self.appText + self.gnuText + self.wodText
 		QMessageBox.about(self,  "About " + QCoreApplication.applicationName(),  self.aboutText )
 
