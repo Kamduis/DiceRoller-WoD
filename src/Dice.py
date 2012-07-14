@@ -25,10 +25,13 @@ along with DiceRoller-WoD.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
-from PyQt4.QtCore import QObject, qDebug, pyqtSignal
+from PySide.QtCore import *
+# Hiermit kann ich weiterhin ich die Syntax der Signale und Slots so belassen, wie sie in PyQt vorgeschrieben ist.
+from PySide.QtCore import Signal as pyqtSignal
+from PySide.QtCore import Slot as pyqtSlot
 
-from Error import ErrValue
-from Random import Random
+from src.Error import ErrValue
+from src.Random import Random
 
 
 
@@ -46,12 +49,17 @@ class DieResult:
 
 
 class Die(QObject):
+	"""
+	Simuliert einen Würfel mit beliebig vielen Seiten.
+	"""
+
 	facesChanged = pyqtSignal(int)
 	rolled = pyqtSignal(int)
 
 
 	def __init__(self, parent=None, faces=6):
-		super(QObject, self).__init__()
+		QObject.__init__(self, parent)
+
 		self.__faces = faces
 
 
@@ -71,13 +79,17 @@ class Die(QObject):
 
 	def roll(self):
 		self._rollResult = Random.random(1, self.__faces)
-		#qDebug("Ergebnis: " + unicode(self._rollResult))
+		#qDebug("Ergebnis: " + str(self._rollResult))
 		self.rolled.emit(self._rollResult)
 
 
 
 
 class DieExploding(Die):
+	"""
+	Simuliert einen Würfel, der explodieren kann, also beim Erreichen eines bestimmten Ergebnisses und darüber automatisch. nocheinmal gewürfelt wird.
+	"""
+
 	thresholdChanged = pyqtSignal(int)
 	exploded = pyqtSignal(bool)
 
@@ -114,9 +126,12 @@ class DieExploding(Die):
 
 
 class DieWoD(DieExploding):
+	"""
+	Der Würfel für die WoD: 10-seitig, kann explodieren und ab einer 8 zählt der Würfel als Erfolg.
+	"""
+	
 	__successThreshold = 8
 	__successThresholdChance = 10
-
 
 	rollFinished = pyqtSignal(object)
 

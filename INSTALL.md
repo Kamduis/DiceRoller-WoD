@@ -2,7 +2,7 @@
 
 ## Requirements
 
-DiceRoller-WoD requires [Python](http://http://www.python.org//) Version 2.7 or greater and [PyQt4](http://www.riverbankcomputing.co.uk/software/pyqt/download).
+DiceRoller-WoD requires [Python](http://http://www.python.org//) Version 2.7 or greater and [PySide](http://www.pyside.org/).
 
 ## Excecute
 

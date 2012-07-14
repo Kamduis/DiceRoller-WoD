@@ -8,7 +8,7 @@ Developed by Victor.
 
 ## License
 
-SoulCreator is licensed under the GNU General Public License (GPL).
+DiceRoller-WoD is licensed under the GNU General Public License (GPL).
 
 ## Copyright
 

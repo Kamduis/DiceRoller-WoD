@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -9,16 +8,16 @@ This file is part of DiceRoller-WoD.
 
 DiceRoller-WoD is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation,  either version 3 of the License,  or
+the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-DiceRoller-WoD is distributed in the hope that it will be useful, 
+DiceRoller-WoD is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with DiceRoller-WoD.  If not,  see <http://www.gnu.org/licenses/>.
+along with DiceRoller-WoD.  If not, see <http://www.gnu.org/licenses/>.
 
 @package DiceRoller-WoD
 """
@@ -26,17 +25,11 @@ along with DiceRoller-WoD.  If not,  see <http://www.gnu.org/licenses/>.
 
 
 
-import sys
-
-from PySide.QtGui import *
-
-from src.MainWindow import MainWindow
+import inspect
 
 
 
 
-if __name__ == "__main__":
-	app = QApplication(sys.argv)
-	myapp = MainWindow()
-	myapp.show()
-	sys.exit(app.exec_())
+def funcName():
+	output = "<method \'%(name)s\'>" % {"name": inspect.stack()[1][3]}
+	return output

@@ -1,7 +1,6 @@
 build
 doc
 *.pyc
-*.qm
 *.kdev4
 *~
 *.kate-swp

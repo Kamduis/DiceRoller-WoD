@@ -25,11 +25,13 @@ along with DiceRoller-WoD.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
-from PyQt4.QtCore import QObject, qDebug, pyqtSignal
-from Dice import DieResult, DieWoD
+from PySide.QtCore import *
+# Hiermit kann ich weiterhin ich die Syntax der Signale und Slots so belassen, wie sie in PyQt vorgeschrieben ist.
+from PySide.QtCore import Signal as pyqtSignal
+from PySide.QtCore import Slot as pyqtSlot
 
-
-from Error import ErrValue
+from src.Dice import DieResult, DieWoD
+from src.Error import ErrValue
 
 
 
@@ -45,7 +47,8 @@ class DicePool(QObject):
 
 
 	def __init__(self, parent=None):
-		super(QObject, self).__init__()
+		QObject.__init__(self, parent)
+		
 		self.__die = DieWoD()
 
 		self.__chance = False
@@ -91,7 +94,7 @@ class DicePool(QObject):
 		try:
 			self.__die.threshold = number
 			#qDebug("Threshold ist" + str(self.__die.threshold))
-		except ErrValue, e:
+		except ErrValue as e:
 			qDebug(e.msg + " Threshold remains unchanged.")
 
 
@@ -120,8 +123,6 @@ class DicePool(QObject):
 
 		self.rollDetails()
 
-		#qDebug(unicode(self.__successes) + " Erfolge!")
-
 		self.rolled.emit(self.__successes)
 
 
@@ -141,7 +142,7 @@ class DicePool(QObject):
 
 		self.__rotePoolSize = self.__realPoolSize - self.__successes
 
-		# Wenn self.__die rote-Eigenschaft aktiv ist, werden alle Mißerfolge noch einmal gewürfelt.
+		# Wenn die Rote-Eigenschaft aktiv ist, werden alle Mißerfolge noch einmal gewürfelt.
 		# Hatten wir es aber mit einem Chance-Roll zu tun und der Mißerfolg war ein Patzer, wird auch nicht weitergewürfelt.
 		if self.__rote:
 			for i in range(self.__rotePoolSize):
@@ -149,10 +150,10 @@ class DicePool(QObject):
 
 		self.__tmpExplosions = 0
 
-		# Wenn einer oder mehrere Würfel exploself.__dieren, werden self.__diese erneut gewürfelt. Dabei können sie natürlich wieder und wieder exploself.__dieren.
+		# Wenn einer oder mehrere Würfel explodieren, werden diese erneut gewürfelt. Dabei können sie natürlich wieder und wieder exploself.__dieren.
 		while self.__explosions > 0:
 			self.__tmpExplosions = self.__explosions
-			self.__explosions = 0	# __explosions muß ich wieder zurücksetzen, da self.__die Würfel ja wieder exploself.__dieren können.
+			self.__explosions = 0	# __explosions muß ich wieder zurücksetzen, da die Würfel ja wieder explodieren können.
 
 			for i in range(self.__tmpExplosions):
 				self.__die.roll()
@@ -205,7 +206,7 @@ class ExtendedRoll_Base(QObject):
 
 
 	def __init__(self, parent=None, target=1, poolsize=10):
-		super(QObject, self).__init__()
+		QObject.__init__(self, parent)
 
 		self._rolls = 0
 		self._successes = 0
@@ -221,13 +222,13 @@ class ExtendedRoll_Base(QObject):
 		self._exceptional = False
 		self.__houserules = False
 
-		self._dicePool.thresholdChanged.connect(self.thresholdChanged.emit)
-		self._dicePool.poolSizeChanged.connect(self.poolSizeChanged.emit)
-		self._dicePool.roteChanged.connect(self.roteChanged.emit)
-		self._dicePool.curseChanged.connect(self.curseChanged.emit)
-		self._dicePool.rulesChanged.connect(self.rulesChanged.emit)
+		self._dicePool.thresholdChanged.connect(self.thresholdChanged)
+		self._dicePool.poolSizeChanged.connect(self.poolSizeChanged)
+		self._dicePool.roteChanged.connect(self.roteChanged)
+		self._dicePool.curseChanged.connect(self.curseChanged)
+		self._dicePool.rulesChanged.connect(self.rulesChanged)
 		self._dicePool.rolled.connect(self.addSuccesses)
-		self._dicePool.rollFinished.connect(self.stopRoll)		
+		self._dicePool.rollFinished.connect(self.stopRoll)
 		self._dicePool.rollFinished.connect(self.checkResult)
 
 
