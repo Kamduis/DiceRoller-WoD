@@ -30,8 +30,8 @@ from PySide.QtCore import *
 from PySide.QtCore import Signal as pyqtSignal
 from PySide.QtCore import Slot as pyqtSlot
 
-from Dice import DieResult, DieWoD
-from Error import ErrValue
+from src.Dice import DieResult, DieWoD
+from src.Error import ErrValue
 
 
 
@@ -94,7 +94,7 @@ class DicePool(QObject):
 		try:
 			self.__die.threshold = number
 			#qDebug("Threshold ist" + str(self.__die.threshold))
-		except ErrValue, e:
+		except ErrValue as e:
 			qDebug(e.msg + " Threshold remains unchanged.")
 
 
