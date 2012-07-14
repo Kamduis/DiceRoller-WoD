@@ -303,6 +303,7 @@ class MainWindow(QMainWindow):
 		self.instantRoll.rollFinished.connect(self.setResult)
 		self.extendedRoll.rollFinished.connect(self.setResult)
 
+		self.dicePoolChanged.connect(self.ui.label_dice_total.setNum)
 		self.dicePoolChanged.connect(self.changeDiceDisplay)
 
 		self.timerDice.timeout.connect(self.displayDice)
