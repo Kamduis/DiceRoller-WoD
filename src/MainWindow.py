@@ -194,8 +194,8 @@ class MainWindow(QMainWindow):
 
 		iter = 0
 		for i in self.fileNames:
-			self.trFilename = unicode(i)
-			self.locale = unicode(i)
+			self.trFilename = str(i)
+			self.locale = str(i)
 			self.locale = self.locale[(self.locale.find( "_" )+1):(self.locale.find( "." ))]
 
 			self.translator = QTranslator()
