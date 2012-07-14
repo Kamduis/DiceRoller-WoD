@@ -246,8 +246,12 @@ class MainWindow(QMainWindow):
 
 
 	def populateUi(self):
-		self.rollingDies = RollingDiesWidget(29, 10)
-		self.ui.horizontalLayout_dice.insertWidget(1, self.rollingDies)
+		"""
+		Fügt Widgets in das Fenster ein, wenn diese nicht schon über die ui-Datei definiert sind.
+		"""
+
+		#self.rollingDies = RollingDiesWidget(29, 10)
+		#self.ui.horizontalLayout_dice.insertWidget(1, self.rollingDies)
 
 		#self.rollingDie = RollingDieWidget(10, 1)
 		#self.ui.gridLayout_dice.addWidget(self.rollingDie)
@@ -351,6 +355,8 @@ class MainWindow(QMainWindow):
 	def changeDiceDisplay(self, number):
 		"""
 		Diese Funktion bestimmt, wieviele Würfel angezeigt werden.
+
+		TODO Momentan werden keine WÜrfel angezeigt.
 		"""
 
 		#self.diceNumber = number
@@ -395,8 +401,7 @@ class MainWindow(QMainWindow):
 
 			#i += 1
 
-
-		self.rollingDies.setNumber(number)
+		#self.rollingDies.setNumber(number)
 		pass
 
 

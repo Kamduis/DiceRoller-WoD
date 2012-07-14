@@ -27,8 +27,6 @@ along with DiceRoller-WoD.  If not,  see <http://www.gnu.org/licenses/>.
 
 
 import sys
-#import sip
-#import atexit	# Muß importiert werden, damit cx_freeze unter Windows funktioniert.
 
 from PySide.QtGui import *
 
